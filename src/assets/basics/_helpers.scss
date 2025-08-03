@@ -1,0 +1,88 @@
+.fs10 {
+  font-size: pxToRem(10px);
+}
+
+.fs12 {
+  font-size: pxToRem(12px);
+}
+
+.fs13 {
+  font-size: pxToRem(13px);
+}
+
+.fs14 {
+  font-size: pxToRem(14px);
+}
+
+.fs16 {
+  font-size: pxToRem(16px);
+}
+
+.fs18 {
+  font-size: pxToRem(18px);
+}
+
+.fs20 {
+  font-size: pxToRem(20px);
+}
+
+.fs22 {
+  font-size: pxToRem(22px);
+}
+
+.fs24 {
+  font-size: pxToRem(24px);
+}
+
+.fs26 {
+  font-size: pxToRem(26px);
+}
+
+.fs28 {
+  font-size: pxToRem(28px);
+}
+
+.fs30 {
+  font-size: pxToRem(30px);
+}
+
+.fs32 {
+  font-size: pxToRem(32px);
+}
+
+// Flex Helpers
+.flex {
+  display: flex;
+
+  > *.full {
+    flex: 1;
+  }
+
+  &.justify-end {
+    justify-content: flex-end;
+  }
+
+  &.row {
+    flex-direction: row;
+  }
+
+  &.column {
+    flex-direction: column;
+  }
+
+  &.justify-center {
+    justify-content: center;
+  }
+
+  &.space-between {
+    justify-content: space-between;
+  }
+
+  &.justify-around {
+    justify-content: space-around;
+  }
+
+  &.align-center {
+    align-items: center;
+  }
+}
