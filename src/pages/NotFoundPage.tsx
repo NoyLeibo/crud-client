@@ -1,8 +1,12 @@
+import { useNavigate } from "react-router-dom";
+
 export function NotFoundPage() {
-    return (
-       <>
-          <h1>Not found</h1>
-       </>
-    );
- }
- 
+  const navigate = useNavigate();
+  
+  return (
+    <>
+      <h1>404</h1>
+      <button onClick={() => navigate("/")}>Go back to Home-Page</button>
+    </>
+  );
+}

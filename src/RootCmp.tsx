@@ -1,16 +1,9 @@
-import routesConfig from "./routes";
-import { Outlet, useRoutes } from 'react-router-dom';
-
-function RootCmp() {
-  const routes = useRoutes(routesConfig);
+import { useRoutes } from "react-router-dom";
+import { routesConfig } from "./routes";
 
 
-  return (
-    <div className="RootCmp">
-      {routes}
-      <Outlet />
-    </div>
-  );
+export function RootCmp() {
+  const routes = useRoutes(routesConfig());
+
+  return <>{routes}</>;
 }
-
-export default RootCmp;
