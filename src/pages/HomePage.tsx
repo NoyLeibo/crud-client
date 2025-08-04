@@ -4,6 +4,7 @@ import { AddProductModal } from "../cmps/AddProductModal";
 import { ProductList } from "../cmps/ProductList";
 import { axios } from "../services/axios";
 import type { IProductModel, ProductCategory } from "../models/types";
+import { Spinner } from "../cmps/Spinner";
 
 const getExactlyOneWeekAgo = () => {
   const date = new Date();
@@ -20,15 +21,26 @@ export function HomePage() {
     marketingDate: getExactlyOneWeekAgo(),
   });
   const [addProudctModal, setAddProudctModal] = useState<boolean>(false);
-  const [products, setProducts] = useState<IProductModel[] | null>(null);
+  const [products, setProducts] = useState<IProductModel[]>([]);
   const [filterBy, setFilterBy] = useState<ProductCategory | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const getProducts = async () => {
-      setProducts(await axios.getProducts(filterBy));
-    };
-    getProducts();
+    setLoading(true);
+
+    try {
+      const getProducts = async () => {
+        setProducts(await axios.getProducts(filterBy));
+      };
+      getProducts();
+    } catch (error: any) {
+      console.error(error.message);
+    } finally {
+      console.log("finnallly");
+
+      setLoading(false);
+    }
   }, [filterBy]);
 
   const handleChange = (
@@ -53,19 +65,25 @@ export function HomePage() {
 
   const onAddProduct = () => setAddProudctModal(!addProudctModal);
 
-  // TODO: Add deleteProduct and deleteProduct functianality
-  // const onDeleteProduct = () => setAddProudctModal(!addProudctModal);
   const onDeleteProducts = async (productId?: string) => {
     try {
-      console.log(productId);
-      if (productId) await axios.deleteProduct(productId);
-      else await axios.deleteProduct(selectedIds);
+      if (productId) {
+        await axios.deleteProduct(productId);
+        setProducts((prev) =>
+          prev.filter((product) => product._id !== productId)
+        );
+      } else {
+        await axios.deleteProduct(selectedIds);
+        setProducts((prev) =>
+          prev.filter((product) => !selectedIds.includes(product._id))
+        );
+      }
     } catch (error: any) {
       console.error(error.message);
     }
   };
+  if (loading) return <Spinner />;
 
-  if (!products) return <></>;
   return (
     <>
       <AppHeader
@@ -74,7 +92,7 @@ export function HomePage() {
       />
       {/* TODO: Add lazy loading */}
 
-      {products ? (
+      {products && products.length ? (
         <ProductList
           products={products}
           onEdit={() => {}}
@@ -84,7 +102,15 @@ export function HomePage() {
         />
       ) : (
         //  TODO: Add lazy loading
-        <></>
+        <h2>
+          No products{" "}
+          <span
+            className="cursor underline"
+            onClick={() => setAddProudctModal(true)}
+          >
+            add one now!
+          </span>
+        </h2>
       )}
       {addProudctModal && (
         <AddProductModal
