@@ -81,7 +81,9 @@ export function AddProductModal({
                 onChange={handleChange}
                 required
               >
-                <option value="">Select Category</option>
+                <option value="" disabled={!!formData.category}>
+                  Select Category
+                </option>
                 <option value="Fruit">Fruit</option>
                 <option value="Vegetable">Vegetable</option>
                 <option value="Field Crop">Field Crop</option>

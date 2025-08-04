@@ -5,6 +5,7 @@ import { ProductList } from "../cmps/ProductList";
 import { axios } from "../services/axios";
 import type { IProductModel, ProductCategory } from "../models/types";
 import { Spinner } from "../cmps/Spinner";
+import { FilterBy } from "../cmps/FilterBy";
 
 const getExactlyOneWeekAgo = () => {
   const date = new Date();
@@ -58,6 +59,13 @@ export function HomePage() {
       setProducts(updatedProducts);
       alert("Product has added");
       setAddProudctModal(false);
+      setFormData({
+        name: "",
+        sku: 0,
+        category: "",
+        description: "",
+        marketingDate: getExactlyOneWeekAgo(),
+      });
     } catch (err: any) {
       alert(err.message);
     }
@@ -90,8 +98,8 @@ export function HomePage() {
         onDeleteProducts={onDeleteProducts}
         onAddProduct={onAddProduct}
       />
-      {/* TODO: Add lazy loading */}
 
+      <FilterBy filterBy={filterBy} setFilterBy={setFilterBy} />
       {products && products.length ? (
         <ProductList
           products={products}
@@ -101,12 +109,17 @@ export function HomePage() {
           selectedIds={selectedIds}
         />
       ) : (
-        //  TODO: Add lazy loading
         <h2>
-          No products{" "}
+          No products {filterBy && `with category "${filterBy}"`}{" "}
           <span
             className="cursor underline"
-            onClick={() => setAddProudctModal(true)}
+            onClick={(e) => {
+              setAddProudctModal(true);
+              setFormData((prev) => ({
+                ...prev,
+                category: filterBy || "",
+              }));
+            }}
           >
             add one now!
           </span>
