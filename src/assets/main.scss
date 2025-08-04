@@ -1,13 +1,16 @@
 @use "sass:math";
 
 // Setup
-@import "setup/variables";
+@use "./setup/variables" as *;
+@use "./setup/functions" as *;
 
 // Basics
-@import "basics/helpers";
-@import "basics/layout";
+@use "./basics/helpers" as *;
+@use "./basics/layout" as *;
 
 // Pages
-@import "pages/NotFoundPage";
+@use "./pages/NotFoundPage" as *;
 
 // Components
+@use "./cmps/AppHeader" as *;
+@use "./cmps/AddProductModal" as *;

@@ -1,6 +1,12 @@
 body {
-  font-size: pxToRem(16px);
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
   background-color: #121212;
   color: #f0f0f0;
-  font-family: "Segoe UI", sans-serif;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }

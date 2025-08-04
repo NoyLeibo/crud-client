@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { AppHeader } from "../cmps/AppHeader";
+import { AddProductModal } from "../cmps/AddProductModal";
 
 export function HomePage() {
   const [formData, setFormData] = useState({
@@ -8,8 +10,12 @@ export function HomePage() {
     description: "",
     marketingDate: "",
   });
+  const [addProudctModal, setAddProudctModal] = useState<boolean>(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    console.log(e.target.value);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -29,46 +35,13 @@ export function HomePage() {
     }
   };
 
+  const onAddProduct = () => setAddProudctModal(!addProudctModal);
+  const onDeleteProduct = () => setAddProudctModal(!addProudctModal);
+
   return (
-    <main className="flex align-center justify-center full">
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem", maxWidth: "400px" }}>
-      <h1>Add New Product</h1>
-        <input
-          name="name"
-          placeholder="Name (e.g. Apple)"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-        <input
-          name="sku"
-          type="number"
-          placeholder="SKU (e.g. 101)"
-          value={formData.sku}
-          onChange={handleChange}
-          required
-        />
-        <select name="category" value={formData.category} onChange={handleChange} required>
-          <option value="">Select Category</option>
-          <option value="Fruit">Fruit</option>
-          <option value="Vegetable">Vegetable</option>
-          <option value="Field Crop">Field Crop</option>
-        </select>
-        <input
-          name="description"
-          placeholder="Description (optional)"
-          value={formData.description}
-          onChange={handleChange}
-        />
-        <input
-          name="marketingDate"
-          type="date"
-          value={formData.marketingDate}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Create Product</button>
-      </form>
-    </main>
+    <>
+      <AppHeader onAddProduct={onAddProduct} onDeleteProduct={onDeleteProduct} />
+      {addProudctModal && <AddProductModal handleChange={handleChange} handleSubmit={handleSubmit} formData={formData}/>}
+    </>
   );
 }
