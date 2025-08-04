@@ -1,6 +1,6 @@
 export type SetState<S> = React.Dispatch<React.SetStateAction<S>>;
 
-export type ProductCategory = "Fruit" | "Vegetable" | "Field Crop";
+export type ProductCategory = "Fruit" | "Vegetable" | "Field Crop" | "All";
 
 export type ProductName =
   // Fruit:
@@ -18,11 +18,32 @@ export type ProductName =
 
 export interface IProductModel {
   _id: string;
-  name: ProductName;
+  name: string;
   sku: number;
   description?: string;
-  category: ProductCategory;
-  marketingDate: Date;
+  category: string;
+  marketingDate: string;
   createdAt: Date;
   updatedAt: Date;
 }
+
+import { z } from "zod";
+
+export const productSchema = z.object({
+  name: z.string().min(1, "Product name is required").max(50),
+  sku: z.number().nonnegative("SKU must be 0 or more"),
+  description: z.string().optional(),
+  category: z.enum(["Fruit", "Vegetable", "Field Crop"]),
+  marketingDate: z.string().refine(
+    (val) => {
+      const date = new Date(val);
+      const today = new Date();
+      const weekAgo = new Date();
+      weekAgo.setDate(today.getDate() - 7);
+      return date >= weekAgo && date <= today;
+    },
+    {
+      message: "Date must be within the last 7 days",
+    }
+  ),
+});

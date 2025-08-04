@@ -31,8 +31,6 @@ export const httpService: IHttpService = {
 
 async function ajax(endpoint: string, method: Method = "GET", data: any = null): Promise<any> {
    try {
-      console.log(`Making a ${method} request to: ${BASE_URL}${endpoint} with data:`, data);
-      
       const res = await axios({
          url: `${BASE_URL}${endpoint}`,
          method,
@@ -42,6 +40,7 @@ async function ajax(endpoint: string, method: Method = "GET", data: any = null):
             "Content-Type": "application/json",
          },
       });
+      
       return res.data;
    } catch (err: any) {
       console.log(`Had Issues ${method}ing to the backend, endpoint: ${endpoint}, message: `, err.message);

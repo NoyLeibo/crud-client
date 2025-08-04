@@ -1,10 +1,10 @@
-import type { IProductModel } from "../models/types";
+import type { IProductModel, ProductCategory } from "../models/types";
 import { httpService } from "./http.service";
 
 // GET: Fetch all products (optionally filtered by name)
-async function getProducts(filterByName?: string): Promise<IProductModel[]> {
-  const params = filterByName ? { name: filterByName } : undefined;
-  return await httpService.get("product", params);
+async function getProducts(filter: ProductCategory | null): Promise<IProductModel[]> {
+  const res = filter ? await httpService.get("product", { category: filter }) : await httpService.get("product");;
+  return res
 }
 
 // POST: Create new product

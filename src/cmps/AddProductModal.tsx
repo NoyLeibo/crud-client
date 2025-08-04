@@ -1,28 +1,20 @@
+import type { IProductModel } from "../models/types";
+
 interface AddProductModalProps {
-  formData: {
-    name: string;
-    sku: string;
-    category: string;
-    description: string;
-    marketingDate: string;
-  };
+  formData: Partial<IProductModel>;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
+  getExactlyOneWeekAgo: () => string;
 }
 
 export function AddProductModal({
   handleSubmit,
   handleChange,
   formData,
+  getExactlyOneWeekAgo,
 }: AddProductModalProps) {
-    function getExactlyOneWeekAgo() {
-        const date = new Date();
-        date.setDate(date.getDate() - 7);
-        return date.toISOString().split("T")[0];
-      }
-
   return (
     <div className="add-product-modal">
       <main className="flex align-center justify-center full">
