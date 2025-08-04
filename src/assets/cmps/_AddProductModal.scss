@@ -1,4 +1,17 @@
 .add-product-modal {
+  button {
+    background-color: #566787;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    color: #fff;
+    border: 0;
+
+    height: 1.7rem;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
   main {
     position: fixed;
     top: 0;
@@ -17,6 +30,8 @@
 
       form {
         gap: 2rem;
+      
+
         h1 {
           margin-bottom: 0;
         }
@@ -24,6 +39,7 @@
     }
   }
 }
+
 .modal-background {
   position: fixed;
   top: 0;

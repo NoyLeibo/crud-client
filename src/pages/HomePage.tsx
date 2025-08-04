@@ -83,6 +83,8 @@ export function HomePage() {
           handleSubmit={handleSubmit}
           formData={formData}
           getExactlyOneWeekAgo={getExactlyOneWeekAgo}
+          addProudctModal={addProudctModal}
+          setAddProudctModal={setAddProudctModal}
         />
       )}
     </>
