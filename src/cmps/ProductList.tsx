@@ -42,7 +42,10 @@ export function ProductList({
                 type="checkbox"
                 id="selectAll"
                 onChange={toggleSelectAll}
-                checked={selectedIds.length === products.length}
+                checked={
+                  selectedIds.length === products.length &&
+                  selectedIds.length > 0
+                }
               />
             </th>
             <th className="">Name</th>

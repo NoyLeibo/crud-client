@@ -2,9 +2,13 @@ import type { IProductModel, ProductCategory } from "../models/types";
 import { httpService } from "./http.service";
 
 // GET: Fetch all products (optionally filtered by name)
-async function getProducts(filter: ProductCategory | null): Promise<IProductModel[]> {
-  const res = filter ? await httpService.get("product", { category: filter }) : await httpService.get("product");;
-  return res
+async function getProducts(
+  filter: ProductCategory | null
+): Promise<IProductModel[]> {
+  const res = filter
+    ? await httpService.get("product", { category: filter })
+    : await httpService.get("product");
+  return res;
 }
 
 // POST: Create new product
@@ -23,8 +27,10 @@ async function updateProduct(
 }
 
 // DELETE: Remove product
-async function deleteProduct(productId: string): Promise<{ message: string }> {
-  return await httpService.delete(`product/${productId}`);
+async function deleteProduct(
+  productId: string | string[]
+): Promise<{ message: string }> {
+  return await httpService.delete("product", { ids: productId });
 }
 
 export const axios = {

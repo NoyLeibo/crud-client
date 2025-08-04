@@ -54,8 +54,16 @@ export function HomePage() {
   const onAddProduct = () => setAddProudctModal(!addProudctModal);
 
   // TODO: Add deleteProduct and deleteProduct functianality
-  const onDeleteProduct = () => setAddProudctModal(!addProudctModal);
-  const onDeleteProducts = () => setAddProudctModal(!addProudctModal);
+  // const onDeleteProduct = () => setAddProudctModal(!addProudctModal);
+  const onDeleteProducts = async (productId?: string) => {
+    try {
+      console.log(productId);
+      if (productId) await axios.deleteProduct(productId);
+      else await axios.deleteProduct(selectedIds);
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  };
 
   if (!products) return <></>;
   return (
@@ -70,11 +78,12 @@ export function HomePage() {
         <ProductList
           products={products}
           onEdit={() => {}}
-          onDelete={() => {}}
+          onDelete={onDeleteProducts}
           setSelectedIds={setSelectedIds}
           selectedIds={selectedIds}
         />
       ) : (
+        //  TODO: Add lazy loading
         <></>
       )}
       {addProudctModal && (
