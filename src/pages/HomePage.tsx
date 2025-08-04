@@ -48,14 +48,14 @@ export function HomePage() {
   }
 
   const onAddProduct = () => setAddProudctModal(!addProudctModal);
+
+  // TODO: Add deleteProduct and deleteProduct functianality
   const onDeleteProduct = () => setAddProudctModal(!addProudctModal);
+  const onDeleteProducts = () => setAddProudctModal(!addProudctModal);
 
   return (
     <>
-      <AppHeader
-        onAddProduct={onAddProduct}
-        onDeleteProduct={onDeleteProduct}
-      />
+      <AppHeader onDeleteProducts={onDeleteProducts} onAddProduct={onAddProduct} />
       {/* TODO: Add lazy loading */}
       {products ? <ProductList products={products} /> : <></>}
       {addProudctModal && (
