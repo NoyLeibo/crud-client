@@ -91,10 +91,18 @@
   width: 100dvw;
 }
 
+.width100percent {
+  width: 100%;
+}
+
 .cursor {
   cursor: pointer;
 }
 
 .underline {
   text-decoration: underline;
+}
+
+.no-drop {
+  cursor: no-drop !important;
 }

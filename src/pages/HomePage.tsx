@@ -26,6 +26,7 @@ export function HomePage() {
   const [filterBy, setFilterBy] = useState<ProductCategory | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [yesOrNoModal, setYesOrNoModal] = useState<boolean>(false);
 
   useEffect(() => {
     setLoading(true);
@@ -86,8 +87,11 @@ export function HomePage() {
           prev.filter((product) => !selectedIds.includes(product._id))
         );
       }
+      setSelectedIds([])
     } catch (error: any) {
       console.error(error.message);
+    } finally {
+      setYesOrNoModal(false);
     }
   };
   if (loading) return <Spinner />;
@@ -97,6 +101,9 @@ export function HomePage() {
       <AppHeader
         onDeleteProducts={onDeleteProducts}
         onAddProduct={onAddProduct}
+        selectedIds={selectedIds}
+        yesOrNoModal={yesOrNoModal}
+        setYesOrNoModal={setYesOrNoModal}
       />
 
       <FilterBy filterBy={filterBy} setFilterBy={setFilterBy} />
@@ -113,7 +120,7 @@ export function HomePage() {
           No products {filterBy && `with category "${filterBy}"`}{" "}
           <span
             className="cursor underline"
-            onClick={(e) => {
+            onClick={() => {
               setAddProudctModal(true);
               setFormData((prev) => ({
                 ...prev,
