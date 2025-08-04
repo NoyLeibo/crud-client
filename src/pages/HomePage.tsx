@@ -5,6 +5,12 @@ import { ProductList } from "../cmps/ProductList";
 import { axios } from "../services/axios";
 import type { IProductModel, ProductCategory } from "../models/types";
 
+const getExactlyOneWeekAgo = () => {
+  const date = new Date();
+  date.setDate(date.getDate() - 7);
+  return date.toISOString().split("T")[0];
+};
+
 export function HomePage() {
   const [formData, setFormData] = useState<Partial<IProductModel>>({
     name: "",
@@ -16,6 +22,7 @@ export function HomePage() {
   const [addProudctModal, setAddProudctModal] = useState<boolean>(false);
   const [products, setProducts] = useState<IProductModel[] | null>(null);
   const [filterBy, setFilterBy] = useState<ProductCategory | null>(null);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -34,18 +41,15 @@ export function HomePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const data = await axios.createProduct(formData);
-      alert(data);
-    } catch (err) {
-      alert("Error creating product");
+      const newProduct = await axios.createProduct(formData);
+      const updatedProducts = [...(products || []), newProduct];
+      setProducts(updatedProducts);
+      alert("Product has added");
+      setAddProudctModal(false);
+    } catch (err: any) {
+      alert(err.message);
     }
   };
-
-  function getExactlyOneWeekAgo() {
-    const date = new Date();
-    date.setDate(date.getDate() - 7);
-    return date.toISOString().split("T")[0];
-  }
 
   const onAddProduct = () => setAddProudctModal(!addProudctModal);
 
@@ -53,11 +57,26 @@ export function HomePage() {
   const onDeleteProduct = () => setAddProudctModal(!addProudctModal);
   const onDeleteProducts = () => setAddProudctModal(!addProudctModal);
 
+  if (!products) return <></>;
   return (
     <>
-      <AppHeader onDeleteProducts={onDeleteProducts} onAddProduct={onAddProduct} />
+      <AppHeader
+        onDeleteProducts={onDeleteProducts}
+        onAddProduct={onAddProduct}
+      />
       {/* TODO: Add lazy loading */}
-      {products ? <ProductList products={products} /> : <></>}
+
+      {products ? (
+        <ProductList
+          products={products}
+          onEdit={() => {}}
+          onDelete={() => {}}
+          setSelectedIds={setSelectedIds}
+          selectedIds={selectedIds}
+        />
+      ) : (
+        <></>
+      )}
       {addProudctModal && (
         <AddProductModal
           handleChange={handleChange}

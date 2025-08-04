@@ -1,26 +1,41 @@
 import type { IProductModel } from "../models/types";
-import { Pencil, Trash2 } from "lucide-react"; 
+import { Pencil, Trash2 } from "lucide-react";
 
 interface ProductPreviewProps {
   product: IProductModel;
   onEdit?: (product: IProductModel) => void;
   onDelete?: (id: string) => void;
+  toggleSelect: (id: string) => void;
+  isSelected: (id: string) => boolean;
 }
 
-export function ProductPreview({ product, onEdit, onDelete }: ProductPreviewProps) {
+export function ProductPreview({
+  product,
+  onEdit,
+  onDelete,
+  toggleSelect,
+  isSelected,
+}: ProductPreviewProps) {
   return (
-    <tr className="border-b hover:bg-gray-100">
-      <td className="p-2">{product.name}</td>
-      <td className="p-2">{product.sku}</td>
-      <td className="p-2">{product.category}</td>
-      <td className="p-2">{product.description}</td>
-      <td className="p-2">{product.marketingDate}</td>
-      <td className="p-2 flex gap-2 justify-center">
+    <tr>
+      <td>
+        <input
+          type="checkbox"
+          onChange={() => toggleSelect(product._id)}
+          checked={isSelected(product._id)}
+        />
+      </td>
+      <td>{product.name}</td>
+      <td>{product.sku}</td>
+      <td>{product.category}</td>
+      <td>{product.description ? product.description : '-'}</td>
+      <td>{product.marketingDate}</td>
+      <td>
         <button onClick={() => onEdit?.(product)}>
-          <Pencil size={16} className="text-blue-600 hover:text-blue-800" />
+          <Pencil size={16} />
         </button>
         <button onClick={() => onDelete?.(product._id!)}>
-          <Trash2 size={16} className="text-red-600 hover:text-red-800" />
+          <Trash2 size={16} />
         </button>
       </td>
     </tr>
