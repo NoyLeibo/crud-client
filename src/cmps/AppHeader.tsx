@@ -29,10 +29,10 @@ export function AppHeader({
           className={`btn delete ${!hasSelected ? "no-drop unset-hover" : ""}`}
           onClick={() => setYesOrNoModal(true)}
         >
-          ❌ Delete
+          Delete
         </button>
         <button className="btn add" onClick={() => onAddProduct()}>
-          ➕ Add New
+          Add New
         </button>
       </div>
       {yesOrNoModal && (

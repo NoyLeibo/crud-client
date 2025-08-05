@@ -10,10 +10,9 @@
   font-size: 14px;
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-
   th,
   td {
-    padding: .75rem 1rem;
+    padding: 0.75rem 1rem;
     text-align: left;
     border-bottom: 1px solid #ddd;
     vertical-align: middle;
@@ -29,5 +28,29 @@
 
   tr:hover {
     background-color: #f9f9f9;
+  }
+}
+
+@media (max-width: 787px) {
+  .product-table {
+    thead {
+      display: none;
+    }
+
+    tbody {
+      // display: flex;
+      // flex-direction: column;
+      // gap: 1rem;
+    }
+    tr {
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      
+    }
   }
 }

@@ -32,23 +32,27 @@ export function ProductPreview({
 
   return (
     <tr>
-      <td>
+      <td data-label="Select">
         <input
           type="checkbox"
           onChange={() => toggleSelect(product._id)}
           checked={isSelected(product._id)}
         />
       </td>
-      <td>{product.name}</td>
-      <td>{product.sku}</td>
-      <td>
+      <td data-label="Name">{product.name}</td>
+      <td data-label="SKU">{product.sku}</td>
+      <td data-label="Category">
         <span style={{ color: getCategoryColor(product.category) }}>
           {product.category}
         </span>
       </td>
-      <td>{product.description ? product.description : "-"}</td>
-      <td>{format(new Date(product.marketingDate), "dd/MM/yyyy")}</td>
-      <td>
+      <td data-label="Description">
+        {product.description ? product.description : "-"}
+      </td>
+      <td data-label="Marketing Date">
+        {format(new Date(product.marketingDate), "dd/MM/yyyy")}
+      </td>
+      <td data-label="Actions">
         <button onClick={() => onEdit(product._id)}>
           <Pencil size={16} />
         </button>

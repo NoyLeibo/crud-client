@@ -1,12 +1,12 @@
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   background-color: #3e5a7a;
   color: white;
   border-radius: 4px 4px 0 0;
-  width: 100dvw;
-
+  min-width: 100dvw;
+  max-width: 100dvw;
+  h1 {
+    font-size: clamp(1.5rem, 0.2143rem + 2.6786vw, 2.625rem);
+  }
   > :nth-child(1),
   > :nth-child(2) {
     margin: 20px;
@@ -19,8 +19,7 @@ header {
       padding: 6px 12px;
       border: none;
       border-radius: 4px;
-      font-size: 0.9rem;
-      cursor: pointer;
+      font-size: clamp(0.5rem, 0.3571rem + 0.7143vw, 1rem);      cursor: pointer;
       color: white;
       transition: opacity 0.2s ease;
 
