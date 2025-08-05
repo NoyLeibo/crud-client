@@ -1,6 +1,7 @@
 import type { IProductModel } from "../models/types";
 import { Pencil, Trash2 } from "lucide-react";
 import { format } from "date-fns";
+import { TruncatedText } from "./TruncatedText";
 
 interface ProductPreviewProps {
   product: IProductModel;
@@ -47,7 +48,7 @@ export function ProductPreview({
         </span>
       </td>
       <td data-label="Description">
-        {product.description ? product.description : "-"}
+        {!product.description ? "-" : product.description.length > 20 ? <TruncatedText text={product.description} title={product.name} /> : product.description }
       </td>
       <td data-label="Marketing Date">
         {format(new Date(product.marketingDate), "dd/MM/yyyy")}

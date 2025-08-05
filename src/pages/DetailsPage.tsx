@@ -44,7 +44,6 @@ export function DetailsPage() {
     try {
       if (!product) throw new Error("No product has found");
       await axios.save(product);
-      alert("Product updated!");
       navigate("/");
     } catch (error: any) {
       console.error("Update failed", error);
