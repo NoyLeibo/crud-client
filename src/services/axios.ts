@@ -18,7 +18,7 @@ async function save(
   updatedFields: Partial<IProductModel>
 ): Promise<IProductModel> {
   if (updatedFields._id)
-    return await httpService.put(`product/${updatedFields._id}`, updatedFields);
+    return await httpService.put(BASE_URL + updatedFields._id, updatedFields);
   else return await httpService.post(BASE_URL, updatedFields);
 }
 
@@ -30,7 +30,7 @@ async function remove(
 }
 
 async function getById(productId: string) {
-  return httpService.get(BASE_URL + productId);
+  return await httpService.get(BASE_URL + productId);
 }
 
 export const axios = {

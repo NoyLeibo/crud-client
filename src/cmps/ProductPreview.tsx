@@ -4,8 +4,8 @@ import { format } from "date-fns";
 
 interface ProductPreviewProps {
   product: IProductModel;
-  onEdit?: (product: IProductModel) => void;
-  onDelete?: (id: string) => void;
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
   toggleSelect: (id: string) => void;
   isSelected: (id: string) => boolean;
 }
@@ -39,27 +39,20 @@ export function ProductPreview({
           checked={isSelected(product._id)}
         />
       </td>
-      <td >{product.name}</td>
-      <td >{product.sku}</td>
+      <td>{product.name}</td>
+      <td>{product.sku}</td>
       <td>
-        <span
-          
-          style={{ color: getCategoryColor(product.category) }}
-        >
+        <span style={{ color: getCategoryColor(product.category) }}>
           {product.category}
         </span>
-      </td>{" "}
-      <td >
-        {product.description ? product.description : "-"}
       </td>
-      <td >
-        {format(new Date(product.marketingDate), "dd/MM/yyyy")}
-      </td>
-      <td  >
-        <button onClick={() => onEdit?.(product)}>
+      <td>{product.description ? product.description : "-"}</td>
+      <td>{format(new Date(product.marketingDate), "dd/MM/yyyy")}</td>
+      <td>
+        <button onClick={() => onEdit(product._id)}>
           <Pencil size={16} />
         </button>
-        <button onClick={() => onDelete?.(product._id!)}>
+        <button onClick={() => onDelete(product._id!)}>
           <Trash2 size={16} />
         </button>
       </td>

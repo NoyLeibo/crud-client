@@ -6,6 +6,7 @@ import { axios } from "../services/axios";
 import type { IProductModel, ProductCategory } from "../models/types";
 import { Spinner } from "../cmps/Spinner";
 import { ProductFilter } from "../cmps/ProductFilter";
+import { useNavigate } from "react-router-dom";
 
 const getExactlyOneWeekAgo = () => {
   const date = new Date();
@@ -27,22 +28,22 @@ export function IndexPage() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [yesOrNoModal, setYesOrNoModal] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setLoading(true);
+    const getProducts = async () => {
+      try {
+        setLoading(true);
+        const data = await axios.getProducts(filterBy);
+        setProducts(data);
+      } catch (error: any) {
+        console.error(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    try {
-      const getProducts = async () => {
-        setProducts(await axios.getProducts(filterBy));
-      };
-      getProducts();
-    } catch (error: any) {
-      console.error(error.message);
-    } finally {
-      console.log("finnallly");
-
-      setLoading(false);
-    }
+    getProducts();
   }, [filterBy]);
 
   const handleChange = (
@@ -110,7 +111,7 @@ export function IndexPage() {
       {products && products.length ? (
         <ProductList
           products={products}
-          onEdit={() => {}}
+          onEdit={(id) => navigate(`/product/${id}`)}
           onDelete={onDeleteProducts}
           setSelectedIds={setSelectedIds}
           selectedIds={selectedIds}

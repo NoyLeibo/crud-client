@@ -1,0 +1,52 @@
+.product-details-page {
+  padding: 2rem 2rem 0 2rem;
+  background-color: #f7f9fb;
+  
+  .arrow-back {
+    position: relative;
+    right: 20%;
+  }
+  h1 {
+    margin-bottom: 2rem;
+    color: #4a5a75;
+  }
+
+  .product-form {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    gap: 1.2rem;
+
+    label {
+      font-weight: 500;
+
+      input,
+      select {
+        margin-top: .5rem;
+        padding: .6rem;
+        border: 1px solid #ccc;
+        border-radius: .5rem;
+        font-size: 1rem;
+      }
+    }
+
+    .btn-save {
+      margin-top: 1rem;
+      background-color: #4a5a75;
+      color: #fff;
+      border: none;
+      padding: .7rem 1.2rem;
+      border-radius: .5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color .3s ease;
+
+      &:hover {
+        background-color: #39475d;
+      }
+    }
+  }
+}

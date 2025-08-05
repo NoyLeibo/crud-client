@@ -3,8 +3,8 @@ import { ProductPreview } from "./ProductPreview";
 
 interface ProductListProps {
   products: IProductModel[];
-  onEdit?: (product: IProductModel) => void;
-  onDelete?: (id: string) => void;
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
   setSelectedIds: SetState<string[]>;
   selectedIds: string[];
 }
