@@ -13,7 +13,6 @@ import { ProductFilter } from "../cmps/ProductFilter";
 import { useNavigate } from "react-router-dom";
 import { getExactlyOneWeekAgo } from "../services/utills";
 
-
 export function IndexPage() {
   const [formData, setFormData] = useState<Partial<IProductModel>>({
     name: "",
@@ -74,7 +73,6 @@ export function IndexPage() {
       const newProduct = await axios.save(formData);
       const updatedProducts = [...(products || []), newProduct];
       setProducts(updatedProducts);
-      alert("Product has added");
       setAddProudctModal(false);
       setFormData({
         name: "",
