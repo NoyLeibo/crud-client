@@ -19,15 +19,19 @@ export function YesOrNoModal({
         <h1>{title}</h1>
         <h3>{text}</h3>
         <div className="yes-no-buttons-container flex">
-          {handleNo && <button className="cancel-btn cursor" onClick={handleNo}>
-            Cancel
-          </button>}
+          {handleNo && (
+            <button className="cancel-btn cursor" onClick={handleNo}>
+              Cancel
+            </button>
+          )}
           <button className="leave-page-btn cursor" onClick={handleYes}>
             {yesButtonText ? yesButtonText : "Yes"}
           </button>
         </div>
       </div>
-      <div className="modal-background" onClick={handleNo}></div>
+      <div className="modal-background" onClick={handleNo || handleYes}></div>
+      {/* handleNo is for closing the modal,
+      if is not exists handleYes should close the modal */}
     </div>
   );
 }
