@@ -10,6 +10,7 @@ interface AddProductModalProps {
   getExactlyOneWeekAgo: () => string;
   addProudctModal: boolean;
   setAddProudctModal: SetState<boolean>;
+  formErrors: Record<string, string>;
 }
 
 export function AddProductModal({
@@ -19,6 +20,7 @@ export function AddProductModal({
   getExactlyOneWeekAgo,
   addProudctModal,
   setAddProudctModal,
+  formErrors,
 }: AddProductModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +51,7 @@ export function AddProductModal({
   return (
     <div className="add-product-modal">
       <main className="flex align-center justify-center full">
-        <div ref={modalRef} className="modal flex">
+        <div ref={modalRef} className="modal flex column">
           <form onSubmit={handleSubmit} className="flex column">
             <h1>Add New Product</h1>
             <div className="flex column">
@@ -112,6 +114,14 @@ export function AddProductModal({
             </div>
             <button type="submit">Create Product</button>
           </form>
+          <div className="flex column">
+            {formErrors &&
+              Object.entries(formErrors).map(([field, message]) => (
+                <span key={field} className="form-error">
+                  {message}
+                </span>
+              ))}
+          </div>
         </div>
       </main>
       <div className="modal-background"></div>

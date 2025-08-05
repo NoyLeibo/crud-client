@@ -36,14 +36,19 @@ export const productSchema = z.object({
   category: z.enum(["Fruit", "Vegetable", "Field Crop"]),
   marketingDate: z.string().refine(
     (val) => {
-      const date = new Date(val);
+      const inputDate = new Date(val);
       const today = new Date();
-      const weekAgo = new Date();
-      weekAgo.setDate(today.getDate() - 7);
-      return date >= weekAgo && date <= today;
+
+      inputDate.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+
+      const sevenDaysAgo = new Date(today);
+      sevenDaysAgo.setDate(today.getDate() - 7);
+
+      return inputDate <= sevenDaysAgo;
     },
     {
-      message: "Date must be within the last 7 days",
+      message: "Date must be 7 or more days ago",
     }
   ),
 });

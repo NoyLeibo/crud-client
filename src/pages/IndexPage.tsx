@@ -3,7 +3,11 @@ import { AppHeader } from "../cmps/AppHeader";
 import { AddProductModal } from "../cmps/AddProductModal";
 import { ProductList } from "../cmps/ProductList";
 import { axios } from "../services/axios";
-import type { IProductModel, ProductCategory } from "../models/types";
+import {
+  productSchema,
+  type IProductModel,
+  type ProductCategory,
+} from "../models/types";
 import { Spinner } from "../cmps/Spinner";
 import { ProductFilter } from "../cmps/ProductFilter";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +26,8 @@ export function IndexPage() {
     description: "",
     marketingDate: getExactlyOneWeekAgo(),
   });
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+
   const [addProudctModal, setAddProudctModal] = useState<boolean>(false);
   const [products, setProducts] = useState<IProductModel[]>([]);
   const [filterBy, setFilterBy] = useState<ProductCategory | null>(null);
@@ -55,6 +61,19 @@ export function IndexPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const result = productSchema.safeParse(formData);
+
+    if (!result.success) {
+      const errors: Record<string, string> = {};
+      result.error.issues.forEach((err) => {
+        if (err.path[0]) {
+          errors[err.path[0] as string] = err.message;
+        }
+      });
+      setFormErrors(errors);
+      return;
+    }
+
     try {
       const newProduct = await axios.save(formData);
       const updatedProducts = [...(products || []), newProduct];
@@ -141,6 +160,7 @@ export function IndexPage() {
           getExactlyOneWeekAgo={getExactlyOneWeekAgo}
           addProudctModal={addProudctModal}
           setAddProudctModal={setAddProudctModal}
+          formErrors={formErrors}
         />
       )}
     </>
