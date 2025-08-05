@@ -3,13 +3,13 @@ import { YesOrNoModal } from "./yesOrNoModal";
 
 interface Props {
   text: string;
-  title: string;
+  title?: string;
 }
 
 export function TruncatedText({ text, title }: Props) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const shouldTruncate = text.length > 20;
+  const shouldTruncate = text.length > 15;
 
   return (
     <div>
@@ -18,7 +18,7 @@ export function TruncatedText({ text, title }: Props) {
           <span>{text}</span>
         ) : (
           <span>
-            {text.slice(0, 20)}...
+            {text.slice(0, 15)}...
             <span className="read-more" onClick={() => setIsExpanded(true)}>
               Read more
             </span>

@@ -20,7 +20,6 @@ export function DetailsPage() {
           throw new Error("Missing productId from route params");
         }
         const res = await axios.getById(productId);
-        console.log(res);
 
         setProduct(res);
       } catch (error: any) {

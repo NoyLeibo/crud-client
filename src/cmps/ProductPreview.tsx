@@ -40,7 +40,8 @@ export function ProductPreview({
           checked={isSelected(product._id)}
         />
       </td>
-      <td data-label="Name">{product.name}</td>
+      <td data-label="Name">
+       {product.name.length > 15 ? <TruncatedText text={product.name} /> : product.name }</td>
       <td data-label="SKU">{product.sku}</td>
       <td data-label="Category">
         <span style={{ color: getCategoryColor(product.category) }}>
@@ -48,7 +49,7 @@ export function ProductPreview({
         </span>
       </td>
       <td data-label="Description">
-        {!product.description ? "-" : product.description.length > 20 ? <TruncatedText text={product.description} title={product.name} /> : product.description }
+        {!product.description ? "-" : product.description.length > 20 ? <TruncatedText text={product.description}  /> : product.description }
       </td>
       <td data-label="Marketing Date">
         {format(new Date(product.marketingDate), "dd/MM/yyyy")}
