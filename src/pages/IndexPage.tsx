@@ -42,6 +42,7 @@ export function IndexPage() {
         setLoading(true);
         const data = await axios.getProducts(filterBy);
         setProducts(data);
+        setSelectedIds([]);
       } catch (error: any) {
         console.error(error.message);
       } finally {
@@ -114,7 +115,6 @@ export function IndexPage() {
       setYesOrNoModal(false);
     }
   };
-  if (loading) return <Spinner />;
 
   return (
     <>
@@ -127,7 +127,9 @@ export function IndexPage() {
       />
 
       <ProductFilter filterBy={filterBy} setFilterBy={setFilterBy} />
-      {products && products.length ? (
+      {loading ? (
+        <Spinner />
+      ) : products && products.length ? (
         <ProductList
           products={products}
           onEdit={(id) => navigate(`/product/${id}`)}
@@ -152,6 +154,7 @@ export function IndexPage() {
           </span>
         </h2>
       )}
+
       {addProudctModal && (
         <AddProductModal
           handleChange={handleChange}
