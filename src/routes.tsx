@@ -3,14 +3,20 @@ import { Navigate } from "react-router-dom";
 import type { Routemodel } from "./models/route.model";
 
 import { NotFoundPage } from "./pages/NotFoundPage";
-import { HomePage } from "./pages/HomePage";
+import { IndexPage } from "./pages/IndexPage";
+import { DetailsPage } from "./pages/DetailsPage";
 
 export function routesConfig(): Routemodel[] {
   return [
     {
       path: "/",
-      element: <HomePage />,
+      element: <IndexPage />,
       label: "Home 🏠",
+    },
+    {
+      path: "/product/:productId",
+      element: <DetailsPage />,
+      label: "Product Details and Edit",
     },
     {
       path: "/404",

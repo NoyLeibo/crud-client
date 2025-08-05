@@ -5,7 +5,7 @@ interface FilterByProps {
   setFilterBy: SetState<ProductCategory | null>;
 }
 
-export function FilterBy({ filterBy, setFilterBy }: FilterByProps) {
+export function ProductFilter({ filterBy, setFilterBy }: FilterByProps) {
   return (
     <div className="filter-by-section flex justify-center align-center">
       <h3>Filter by:&nbsp;</h3>

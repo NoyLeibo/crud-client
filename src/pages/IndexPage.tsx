@@ -5,7 +5,7 @@ import { ProductList } from "../cmps/ProductList";
 import { axios } from "../services/axios";
 import type { IProductModel, ProductCategory } from "../models/types";
 import { Spinner } from "../cmps/Spinner";
-import { FilterBy } from "../cmps/FilterBy";
+import { ProductFilter } from "../cmps/ProductFilter";
 
 const getExactlyOneWeekAgo = () => {
   const date = new Date();
@@ -13,7 +13,7 @@ const getExactlyOneWeekAgo = () => {
   return date.toISOString().split("T")[0];
 };
 
-export function HomePage() {
+export function IndexPage() {
   const [formData, setFormData] = useState<Partial<IProductModel>>({
     name: "",
     sku: 0,
@@ -55,7 +55,7 @@ export function HomePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const newProduct = await axios.createProduct(formData);
+      const newProduct = await axios.save(formData);
       const updatedProducts = [...(products || []), newProduct];
       setProducts(updatedProducts);
       alert("Product has added");
@@ -77,17 +77,17 @@ export function HomePage() {
   const onDeleteProducts = async (productId?: string) => {
     try {
       if (productId) {
-        await axios.deleteProduct(productId);
+        await axios.remove(productId);
         setProducts((prev) =>
           prev.filter((product) => product._id !== productId)
         );
       } else {
-        await axios.deleteProduct(selectedIds);
+        await axios.remove(selectedIds);
         setProducts((prev) =>
           prev.filter((product) => !selectedIds.includes(product._id))
         );
       }
-      setSelectedIds([])
+      setSelectedIds([]);
     } catch (error: any) {
       console.error(error.message);
     } finally {
@@ -106,7 +106,7 @@ export function HomePage() {
         setYesOrNoModal={setYesOrNoModal}
       />
 
-      <FilterBy filterBy={filterBy} setFilterBy={setFilterBy} />
+      <ProductFilter filterBy={filterBy} setFilterBy={setFilterBy} />
       {products && products.length ? (
         <ProductList
           products={products}

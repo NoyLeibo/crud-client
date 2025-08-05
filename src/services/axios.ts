@@ -1,41 +1,41 @@
 import type { IProductModel, ProductCategory } from "../models/types";
 import { httpService } from "./http.service";
 
-// GET: Fetch all products (optionally filtered by name)
+const BASE_URL = "product/";
+
+// GET: Fetch all products (optionally filtered by category)
 async function getProducts(
   filter: ProductCategory | null
 ): Promise<IProductModel[]> {
   const res = filter
-    ? await httpService.get("product", { category: filter })
-    : await httpService.get("product");
+    ? await httpService.get(BASE_URL, { category: filter })
+    : await httpService.get(BASE_URL);
   return res;
 }
 
-// POST: Create new product
-async function createProduct(
-  product: Partial<IProductModel>
-): Promise<IProductModel> {
-  return await httpService.post("product", product);
-}
-
-// PUT: Update existing product
-async function updateProduct(
-  productId: string,
+// PUT: Update existing product, or saving a new one
+async function save(
   updatedFields: Partial<IProductModel>
 ): Promise<IProductModel> {
-  return await httpService.put(`product/${productId}`, updatedFields);
+  if (updatedFields._id)
+    return await httpService.put(`product/${updatedFields._id}`, updatedFields);
+  else return await httpService.post(BASE_URL, updatedFields);
 }
 
 // DELETE: Remove product
-async function deleteProduct(
+async function remove(
   productId: string | string[]
 ): Promise<{ message: string }> {
-  return await httpService.delete("product", { ids: productId });
+  return await httpService.delete(BASE_URL, { ids: productId });
+}
+
+async function getById(productId: string) {
+  return httpService.get(BASE_URL + productId);
 }
 
 export const axios = {
   getProducts,
-  createProduct,
-  updateProduct,
-  deleteProduct,
+  save,
+  remove,
+  getById,
 };
