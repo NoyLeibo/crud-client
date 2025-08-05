@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { YesOrNoModal } from "./yesOrNoModal";
-import type { IProductModel, SetState } from "../models/types";
+import type { SetState } from "../models/types";
 
 interface AppHeaderProps {
   onAddProduct: () => void;

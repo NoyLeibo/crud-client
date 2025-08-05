@@ -46,18 +46,6 @@ export function AddProductModal({
     };
   }, [addProudctModal]);
 
-  function getCategoryColor(category: string): string {
-    switch (category) {
-      case "Fruit":
-        return "green";
-      case "Vegetable":
-        return "orange";
-      case "Field Crop":
-        return "brown";
-      default:
-        return "black";
-    }
-  }
   return (
     <div className="add-product-modal">
       <main className="flex align-center justify-center full">
