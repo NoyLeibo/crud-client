@@ -106,3 +106,9 @@
 .no-drop {
   cursor: no-drop !important;
 }
+
+.unset-hover{
+  &:hover{
+    opacity: 1 !important;
+  }
+}

@@ -116,8 +116,8 @@ export function HomePage() {
           selectedIds={selectedIds}
         />
       ) : (
-        <h2>
-          No products {filterBy && `with category "${filterBy}"`}{" "}
+        <h2 className="flex align-center justify-center">
+          No products{filterBy && ` with category "${filterBy}"`}&nbsp;
           <span
             className="cursor underline"
             onClick={() => {

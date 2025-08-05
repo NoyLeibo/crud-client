@@ -46,6 +46,18 @@ export function AddProductModal({
     };
   }, [addProudctModal]);
 
+  function getCategoryColor(category: string): string {
+    switch (category) {
+      case "Fruit":
+        return "green";
+      case "Vegetable":
+        return "orange";
+      case "Field Crop":
+        return "brown";
+      default:
+        return "black";
+    }
+  }
   return (
     <div className="add-product-modal">
       <main className="flex align-center justify-center full">
@@ -63,9 +75,10 @@ export function AddProductModal({
               />
             </div>
             <div className="flex column">
-              <label htmlFor="name">SKU*</label>
+              <label htmlFor="sku">SKU*</label>
               <input
                 name="sku"
+                min={0}
                 type="number"
                 placeholder="SKU (e.g. 101)"
                 value={formData.sku}
@@ -74,7 +87,7 @@ export function AddProductModal({
               />
             </div>
             <div className="flex column">
-              <label htmlFor="name">Category*</label>
+              <label htmlFor="category">Category*</label>
               <select
                 name="category"
                 value={formData.category}
@@ -90,7 +103,7 @@ export function AddProductModal({
               </select>
             </div>
             <div className="flex column">
-              <label htmlFor="name">Description</label>
+              <label htmlFor="Description">Description</label>
               <input
                 name="description"
                 placeholder="(optional)"
@@ -99,7 +112,7 @@ export function AddProductModal({
               />
             </div>
             <div className="flex column">
-              <label htmlFor="name">Marketing Date*</label>
+              <label htmlFor="marketingDate">Marketing Date*</label>
               <input
                 name="marketingDate"
                 type="date"

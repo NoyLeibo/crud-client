@@ -27,7 +27,7 @@ export function AppHeader({
       <div className="header-actions">
         <button
           disabled={!hasSelected}
-          className={`btn delete ${!hasSelected ? "no-drop" : ""}`}
+          className={`btn delete ${!hasSelected ? "no-drop unset-hover" : ""}`}
           onClick={() => setYesOrNoModal(true)}
         >
           ❌ Delete

@@ -33,9 +33,9 @@ export function ProductList({
   const isSelected = (id: string) => selectedIds.includes(id);
 
   return (
-    <div className="product-list flex align-center justify-center">
-      <table className="">
-        <thead className="">
+    <div className="product-list-container flex justify-center">
+      <table className="product-table">
+        <thead>
           <tr>
             <th>
               <input
@@ -48,12 +48,12 @@ export function ProductList({
                 }
               />
             </th>
-            <th className="">Name</th>
-            <th className="">SKU</th>
-            <th className="">Category</th>
-            <th className="">Description</th>
-            <th className="">Marketing Date</th>
-            <th className="">Actions</th>
+            <th>Name</th>
+            <th>SKU</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Marketing Date</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>

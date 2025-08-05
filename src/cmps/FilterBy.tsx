@@ -8,7 +8,7 @@ interface FilterByProps {
 export function FilterBy({ filterBy, setFilterBy }: FilterByProps) {
   return (
     <div className="filter-by-section flex justify-center align-center">
-      <label htmlFor="category">Category</label>
+      <h3>Filter by:&nbsp;</h3>
       <select
         name="category"
         value={filterBy || ""}

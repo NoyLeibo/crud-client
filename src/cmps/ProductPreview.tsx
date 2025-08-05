@@ -1,5 +1,6 @@
 import type { IProductModel } from "../models/types";
 import { Pencil, Trash2 } from "lucide-react";
+import { format } from "date-fns";
 
 interface ProductPreviewProps {
   product: IProductModel;
@@ -16,6 +17,19 @@ export function ProductPreview({
   toggleSelect,
   isSelected,
 }: ProductPreviewProps) {
+  function getCategoryColor(category: string): string {
+    switch (category) {
+      case "Fruit":
+        return "green";
+      case "Vegetable":
+        return "orange";
+      case "Field Crop":
+        return "brown";
+      default:
+        return "black";
+    }
+  }
+
   return (
     <tr>
       <td>
@@ -25,12 +39,23 @@ export function ProductPreview({
           checked={isSelected(product._id)}
         />
       </td>
-      <td>{product.name}</td>
-      <td>{product.sku}</td>
-      <td>{product.category}</td>
-      <td>{product.description ? product.description : '-'}</td>
-      <td>{product.marketingDate}</td>
+      <td >{product.name}</td>
+      <td >{product.sku}</td>
       <td>
+        <span
+          
+          style={{ color: getCategoryColor(product.category) }}
+        >
+          {product.category}
+        </span>
+      </td>{" "}
+      <td >
+        {product.description ? product.description : "-"}
+      </td>
+      <td >
+        {format(new Date(product.marketingDate), "dd/MM/yyyy")}
+      </td>
+      <td  >
         <button onClick={() => onEdit?.(product)}>
           <Pencil size={16} />
         </button>
