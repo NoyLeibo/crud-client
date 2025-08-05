@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import type { IProductModel } from "../models/types";
+import { productSchema, type IProductModel } from "../models/types";
 import { axios } from "../services/axios";
 import { ArrowBigLeft } from "lucide-react";
+import { getExactlyOneWeekAgo } from "../services/utills";
 
 export function DetailsPage() {
   const { productId } = useParams();
@@ -10,6 +11,7 @@ export function DetailsPage() {
   const [product, setProduct] = useState<IProductModel | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     async function fetchProduct() {
@@ -42,6 +44,18 @@ export function DetailsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const result = productSchema.safeParse(product);
+
+      if (!result.success) {
+        const errors: Record<string, string> = {};
+        result.error.issues.forEach((err) => {
+          if (err.path[0]) {
+            errors[err.path[0] as string] = err.message;
+          }
+        });
+        setFormErrors(errors);
+        return;
+      }
       if (!product) throw new Error("No product has found");
       await axios.save(product);
       navigate("/");
@@ -112,11 +126,20 @@ export function DetailsPage() {
             value={product.marketingDate?.slice(0, 10)}
             onChange={handleChange}
             required
+            max={getExactlyOneWeekAgo()}
           />
         </label>
         <button type="submit" className="btn-save">
           Save
         </button>
+        <div className="flex column">
+          {formErrors &&
+            Object.entries(formErrors).map(([field, message]) => (
+              <span key={field} className="form-error">
+                {message}
+              </span>
+            ))}
+        </div>
       </form>
     </main>
   );

@@ -7,7 +7,7 @@ interface Props {
 }
 
 export function TruncatedText({ text, title }: Props) {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const shouldTruncate = text.length > 20;
 

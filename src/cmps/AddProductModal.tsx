@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { IProductModel, SetState } from "../models/types";
+import { getExactlyOneWeekAgo } from "../services/utills";
 
 interface AddProductModalProps {
   formData: Partial<IProductModel>;
@@ -7,7 +8,6 @@ interface AddProductModalProps {
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
-  getExactlyOneWeekAgo: () => string;
   addProudctModal: boolean;
   setAddProudctModal: SetState<boolean>;
   formErrors: Record<string, string>;
@@ -17,7 +17,6 @@ export function AddProductModal({
   handleSubmit,
   handleChange,
   formData,
-  getExactlyOneWeekAgo,
   addProudctModal,
   setAddProudctModal,
   formErrors,
@@ -26,8 +25,6 @@ export function AddProductModal({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      console.log("clickkkk");
-
       if (
         addProudctModal &&
         modalRef.current &&
