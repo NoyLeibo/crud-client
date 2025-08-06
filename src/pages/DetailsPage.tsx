@@ -5,18 +5,17 @@ import { axios } from "../services/axios";
 import { ArrowBigLeft } from "lucide-react";
 import { getExactlyOneWeekAgo } from "../services/utills";
 import { Spinner } from "../cmps/Spinner";
-import { YesOrNoModal } from "../cmps/yesOrNoModal";
+import { YesOrNoModal } from "../cmps/YesOrNoModal";
+import { FormField } from "../cmps/FormFiled";
 
 export function DetailsPage() {
   const { productId } = useParams();
   const navigate = useNavigate();
 
   const [product, setProduct] = useState<IProductModel | null>(null);
-  const [initialProduct, setInitialProduct] = useState<IProductModel | null>(
-    null
-  );
+  const [initialProduct, setInitialProduct] = useState<IProductModel | null>(null);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [showLeaveModal, setShowLeaveModal] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -59,8 +58,6 @@ export function DetailsPage() {
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
-    console.log('handleFormSubmit');
-    
     e.preventDefault();
     if (!product) return;
 
@@ -93,35 +90,31 @@ export function DetailsPage() {
       <div className="flex row align-center">
         <ArrowBigLeft
           className="arrow-back cursor"
-          onClick={() => handleBackClick()}
+          onClick={handleBackClick}
         />
         <h1 className="fs24">Edit Product</h1>
       </div>
 
       <form onSubmit={handleFormSubmit} className="product-form flex column">
-        <label className="flex column">
-          Name:
-          <input
-            name="name"
-            value={product.name}
-            onChange={handleChange}
-            required
-          />
-        </label>
+        <FormField
+          label="Name"
+          name="name"
+          value={product.name}
+          onChange={handleChange}
+          required
+        />
 
-        <label className="flex column">
-          SKU:
-          <input
-            name="sku"
-            type="number"
-            value={product.sku}
-            onChange={handleChange}
-            required
-          />
-        </label>
+        <FormField
+          label="SKU"
+          name="sku"
+          type="number"
+          value={product.sku}
+          onChange={handleChange}
+          required
+        />
 
-        <label className="flex column">
-          Category:
+        <div className="flex column">
+          <label htmlFor="category">Category</label>
           <select
             name="category"
             value={product.category}
@@ -132,28 +125,24 @@ export function DetailsPage() {
             <option value="Vegetable">Vegetable</option>
             <option value="Field Crop">Field Crop</option>
           </select>
-        </label>
+        </div>
 
-        <label className="flex column">
-          Description:
-          <input
-            name="description"
-            value={product.description || ""}
-            onChange={handleChange}
-          />
-        </label>
+        <FormField
+          label="Description"
+          name="description"
+          value={product.description || ""}
+          onChange={handleChange}
+        />
 
-        <label className="flex column">
-          Marketing Date:
-          <input
-            name="marketingDate"
-            type="date"
-            value={product.marketingDate?.slice(0, 10)}
-            onChange={handleChange}
-            max={getExactlyOneWeekAgo()}
-            required
-          />
-        </label>
+        <FormField
+          label="Marketing Date"
+          name="marketingDate"
+          type="date"
+          value={product.marketingDate?.slice(0, 10)}
+          onChange={handleChange}
+          max={getExactlyOneWeekAgo()}
+          required
+        />
 
         <button type="submit" className="btn-save">
           Save

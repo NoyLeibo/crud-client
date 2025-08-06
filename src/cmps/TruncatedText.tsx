@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { YesOrNoModal } from "./yesOrNoModal";
+import { YesOrNoModal } from "./YesOrNoModal";
 
 interface Props {
   text: string;

@@ -1,4 +1,4 @@
-import { YesOrNoModal } from "./yesOrNoModal";
+import { YesOrNoModal } from "./YesOrNoModal";
 import type { SetState } from "../models/types";
 
 interface AppHeaderProps {

@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { AppHeader } from "../cmps/AppHeader";
 import { AddProductModal } from "../cmps/AddProductModal";
 import { ProductList } from "../cmps/ProductList";
-import { axios } from "../services/axios";
-import {
-  productSchema,
-  type IProductModel,
-  type ProductCategory,
-} from "../models/types";
-import { Spinner } from "../cmps/Spinner";
 import { ProductFilter } from "../cmps/ProductFilter";
-import { useNavigate } from "react-router-dom";
+import { Spinner } from "../cmps/Spinner";
+
+import { axios } from "../services/axios";
 import { getExactlyOneWeekAgo } from "../services/utills";
+import type { IProductModel, ProductCategory } from "../models/types";
 
 export function IndexPage() {
+  const navigate = useNavigate();
+
+  const [products, setProducts] = useState<IProductModel[]>([]);
   const [formData, setFormData] = useState<Partial<IProductModel>>({
     name: "",
     sku: 0,
@@ -21,74 +22,46 @@ export function IndexPage() {
     description: "",
     marketingDate: getExactlyOneWeekAgo(),
   });
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
-  const [addProudctModal, setAddProudctModal] = useState<boolean>(false);
-  const [products, setProducts] = useState<IProductModel[]>([]);
   const [filterBy, setFilterBy] = useState<ProductCategory | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [yesOrNoModal, setYesOrNoModal] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
+  const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] =
+    useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const getProducts = async () => {
+    const fetchProducts = async () => {
       try {
-        setLoading(true);
+        setIsLoading(true);
         const data = await axios.getProducts(filterBy);
         setProducts(data);
         setSelectedIds([]);
-      } catch (error: any) {
-        console.error(error.message);
+      } catch (err: any) {
+        console.error("Failed to fetch products:", err.message);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
-    getProducts();
+    fetchProducts();
   }, [filterBy]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const toggleAddProductModal = () => {
+    setIsAddProductModalOpen((prev) => !prev);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    setFormData({
+      name: "",
+      sku: 0,
+      category: "",
+      description: "",
+      marketingDate: getExactlyOneWeekAgo(),
+    });
+  }, [isAddProductModalOpen]);
 
-    try {
-      const result = productSchema.safeParse(formData);
-
-      if (!result.success) {
-        const errors: Record<string, string> = {};
-        result.error.issues.forEach((err) => {
-          if (err.path[0]) {
-            errors[err.path[0] as string] = err.message;
-          }
-        });
-        setFormErrors(errors);
-        return;
-      }
-      const newProduct = await axios.save(formData);
-      const updatedProducts = [...(products || []), newProduct];
-      setProducts(updatedProducts);
-      setAddProudctModal(false);
-      setFormData({
-        name: "",
-        sku: 0,
-        category: "",
-        description: "",
-        marketingDate: getExactlyOneWeekAgo(),
-      });
-    } catch (err: any) {
-      alert(err.message);
-    }
-  };
-
-  const onAddProduct = () => setAddProudctModal(!addProudctModal);
-
-  const onDeleteProducts = async (productId?: string) => {
+  const handleDeleteProducts = async (productId?: string) => {
     try {
       if (productId) {
         await axios.remove(productId);
@@ -102,60 +75,56 @@ export function IndexPage() {
         );
       }
       setSelectedIds([]);
-    } catch (error: any) {
-      console.error(error.message);
+    } catch (err: any) {
+      console.error("Failed to delete product(s):", err.message);
     } finally {
-      setYesOrNoModal(false);
+      setIsDeleteConfirmModalOpen(false);
     }
+  };
+
+  const handleEmptyClick = () => {
+    setIsAddProductModalOpen(true);
   };
 
   return (
     <>
       <AppHeader
-        onDeleteProducts={onDeleteProducts}
-        onAddProduct={onAddProduct}
+        onDeleteProducts={handleDeleteProducts}
+        onAddProduct={toggleAddProductModal}
         selectedIds={selectedIds}
-        yesOrNoModal={yesOrNoModal}
-        setYesOrNoModal={setYesOrNoModal}
+        yesOrNoModal={isDeleteConfirmModalOpen}
+        setYesOrNoModal={setIsDeleteConfirmModalOpen}
       />
 
       <ProductFilter filterBy={filterBy} setFilterBy={setFilterBy} />
-      {loading ? (
+
+      {isLoading ? (
         <Spinner />
-      ) : products && products.length ? (
+      ) : products.length ? (
         <ProductList
           products={products}
           onEdit={(id) => navigate(`/product/${id}`)}
-          onDelete={onDeleteProducts}
-          setSelectedIds={setSelectedIds}
+          onDelete={handleDeleteProducts}
           selectedIds={selectedIds}
+          setSelectedIds={setSelectedIds}
         />
       ) : (
         <h2 className="flex align-center justify-center">
-          No products{filterBy && ` with category "${filterBy}"`}&nbsp;
-          <span
-            className="cursor underline"
-            onClick={() => {
-              setAddProudctModal(true);
-              setFormData((prev) => ({
-                ...prev,
-                category: filterBy || "",
-              }));
-            }}
-          >
+          No products{filterBy && ` with category "${filterBy}"`}{" "}
+          <span className="cursor underline" onClick={handleEmptyClick}>
             add one now!
           </span>
         </h2>
       )}
 
-      {addProudctModal && (
+      {isAddProductModalOpen && (
         <AddProductModal
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
           formData={formData}
-          addProudctModal={addProudctModal}
-          setAddProudctModal={setAddProudctModal}
-          formErrors={formErrors}
+          setFormData={setFormData}
+          addProudctModal={isAddProductModalOpen}
+          setAddProudctModal={setIsAddProductModalOpen}
+          products={products}
+          setProducts={setProducts}
         />
       )}
     </>
