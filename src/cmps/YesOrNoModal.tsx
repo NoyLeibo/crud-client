@@ -22,7 +22,7 @@ export function YesOrNoModal({
           {handleNo && (
             <button
               type="button"
-              className="cancel-btn cursor"
+              className="cancel-btn cursor flex align-center justify-center"
               onClick={handleNo}
             >
               Cancel
@@ -30,7 +30,7 @@ export function YesOrNoModal({
           )}
           <button
             type="button"
-            className="leave-page-btn cursor"
+            className="leave-page-btn cursor flex align-center justify-center "
             onClick={handleYes}
           >
             {yesButtonText ? yesButtonText : "Yes"}

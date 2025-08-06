@@ -54,16 +54,17 @@
         &.cancel-btn {
           background-color: #f5f5f5;
           color: #333;
-
+          border: 1px solid;
+          
           &:hover {
             background-color: #e0e0e0;
           }
         }
-
+        
         &.leave-page-btn {
           background-color: #d9534f;
           color: #fff;
-
+          
           &:hover {
             background-color: #c9302c;
           }
