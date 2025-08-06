@@ -1,3 +1,24 @@
 .filter-by-section {
-  gap: 10px;
+  gap: 15px;
+  
+  .clear-filters-btn {
+    padding: .5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+    color: #333;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all .2s ease;
+
+    &:hover {
+      background-color: #f0f0f0;
+      border-color: #999;
+    }
+
+    &:active {
+      background-color: #e0e0e0;
+      transform: scale(.95);
+    }
+  }
 }

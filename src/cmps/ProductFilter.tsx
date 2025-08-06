@@ -14,6 +14,11 @@ export function ProductFilter({
   filterByName,
   setFilterByName,
 }: FilterByProps) {
+  const clearFilters = () => {
+    setFilterByName("");
+    setFilterByCategory(null);
+  };
+
   return (
     <div className="filter-by-section flex justify-center align-center">
       <div className="flex column">
@@ -41,6 +46,13 @@ export function ProductFilter({
           onChange={(e) => setFilterByName(e.target.value as string)}
         />
       </div>
+      <button
+        type="button"
+        onClick={() => clearFilters()}
+        className="clear-filters-btn"
+      >
+        Clear Filters
+      </button>
     </div>
   );
 }
