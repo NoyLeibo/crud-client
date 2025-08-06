@@ -45,6 +45,11 @@ export function IndexPage() {
     }
   };
 
+  const clearFilters = () => {
+    setFilterByName("");
+    setFilterByCategory(null);
+  };
+
   useEffect(() => {
     fetchProducts();
   }, [filterByCategory, filterByName]);
@@ -113,6 +118,7 @@ export function IndexPage() {
         setFilterByCategory={setFilterByCategory}
         filterByName={filterByName}
         setFilterByName={setFilterByName}
+        clearFilters={clearFilters}
       />
 
       {isLoading ? (
@@ -145,6 +151,7 @@ export function IndexPage() {
           setAddProudctModal={setIsAddProductModalOpen}
           products={products}
           setProducts={setProducts}
+          clearFilters={clearFilters}
         />
       )}
     </>

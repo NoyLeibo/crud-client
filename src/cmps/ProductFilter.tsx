@@ -6,6 +6,7 @@ interface FilterByProps {
   setFilterByCategory: SetState<ProductCategory | null>;
   filterByName: string;
   setFilterByName: SetState<string>;
+  clearFilters: () => void;
 }
 
 export function ProductFilter({
@@ -13,12 +14,8 @@ export function ProductFilter({
   setFilterByCategory,
   filterByName,
   setFilterByName,
+  clearFilters,
 }: FilterByProps) {
-  const clearFilters = () => {
-    setFilterByName("");
-    setFilterByCategory(null);
-  };
-
   return (
     <div className="filter-by-section flex justify-center align-center">
       <div className="flex column">

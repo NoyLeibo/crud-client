@@ -18,6 +18,7 @@ interface AddProductModalProps {
   setAddProudctModal: SetState<boolean>;
   formData: Partial<IProductModel>;
   setFormData: SetState<Partial<IProductModel>>;
+  clearFilters: () => void;
 }
 
 export function AddProductModal({
@@ -27,6 +28,7 @@ export function AddProductModal({
   products,
   setProducts,
   setAddProudctModal,
+  clearFilters,
 }: AddProductModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -91,8 +93,9 @@ export function AddProductModal({
       setProducts([...products, newProduct]);
       setAddProudctModal(false);
       setFormData(EMPTY_PRODUCT);
+      clearFilters()
     } catch (error: any) {
-      alert(error.message);
+      console.log(error.message);
     }
   };
 
