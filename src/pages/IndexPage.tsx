@@ -8,8 +8,9 @@ import { ProductFilter } from "../cmps/ProductFilter";
 import { Spinner } from "../cmps/Spinner";
 
 import { axios } from "../services/axios";
-import { EMPTY_PRODUCT, getExactlyOneWeekAgo } from "../services/utills";
+import { EMPTY_PRODUCT } from "../services/utills";
 import type { IProductModel, ProductCategory } from "../models/types";
+import { useAlert } from "../context/AlertContext";
 
 export function IndexPage() {
   const navigate = useNavigate();
@@ -26,24 +27,25 @@ export function IndexPage() {
   const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] =
     useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { showAlert } = useAlert();
+
+  const fetchProducts = async () => {
+    try {
+      setIsLoading(true);
+      const data = await axios.getProducts({
+        filterByCategory,
+        filterByName,
+      });
+      setProducts(data);
+      setSelectedIds([]);
+    } catch (err: any) {
+      console.error("Failed to fetch products:", err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setIsLoading(true);
-        const data = await axios.getProducts({
-          filterByCategory,
-          filterByName,
-        });
-        setProducts(data);
-        setSelectedIds([]);
-      } catch (err: any) {
-        console.error("Failed to fetch products:", err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchProducts();
   }, [filterByCategory, filterByName]);
 
@@ -51,14 +53,14 @@ export function IndexPage() {
     setIsAddProductModalOpen((prev) => !prev);
   };
 
+  const toggleUndo = async (productId: string | null = null) => {
+    if (productId) await axios.undoDelete(productId);
+    else await axios.undoDelete(selectedIds);
+    fetchProducts();
+  };
+
   useEffect(() => {
-    setFormData({
-      name: "",
-      sku: 0,
-      category: "",
-      description: "",
-      marketingDate: getExactlyOneWeekAgo(),
-    });
+    setFormData(EMPTY_PRODUCT);
   }, [isAddProductModalOpen]);
 
   const handleDeleteProducts = async (productId?: string) => {
@@ -74,6 +76,16 @@ export function IndexPage() {
           prev.filter((product) => !selectedIds.includes(product._id))
         );
       }
+      showAlert({
+        text: "Products has deleted",
+        type: "success",
+        duration: 3000,
+        undoAction: async () => {
+          if (productId) await toggleUndo(productId);
+          else await toggleUndo();
+          showAlert({ text: "Undo completed ", type: "success" });
+        },
+      });
       setSelectedIds([]);
     } catch (err: any) {
       console.error("Failed to delete product(s):", err.message);

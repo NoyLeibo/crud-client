@@ -12,4 +12,5 @@ export const EMPTY_PRODUCT: Partial<IProductModel> = {
   category: "",
   description: "",
   marketingDate: getExactlyOneWeekAgo(),
+  isDeleted: false,
 };

@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export type SetState<S> = React.Dispatch<React.SetStateAction<S>>;
 
 export type ProductCategory = "Fruit" | "Vegetable" | "Field Crop" | "All";
@@ -25,9 +27,8 @@ export interface IProductModel {
   marketingDate: string;
   createdAt: Date;
   updatedAt: Date;
+  isDeleted: boolean;
 }
-
-import { z } from "zod";
 
 export const productSchema = z.object({
   name: z.string().min(1, "Product name is required").max(50),
@@ -55,4 +56,5 @@ export const productSchema = z.object({
       message: "Date must be 7 or more days ago",
     }
   ),
+  isDeleted: z.boolean().default(false),
 });

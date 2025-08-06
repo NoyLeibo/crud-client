@@ -43,9 +43,16 @@ async function getById(productId: string) {
   return await httpService.get(BASE_URL + productId);
 }
 
+async function undoDelete(
+  ids: string | string[]
+): Promise<IProductModel[] | IProductModel> {
+  return await httpService.put(BASE_URL + "undo-delete", { ids })
+}
+
 export const axios = {
   getProducts,
   save,
   remove,
   getById,
+  undoDelete,
 };
