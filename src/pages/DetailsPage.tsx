@@ -5,30 +5,39 @@ import { axios } from "../services/axios";
 import { ArrowBigLeft } from "lucide-react";
 import { getExactlyOneWeekAgo } from "../services/utills";
 import { Spinner } from "../cmps/Spinner";
+import { YesOrNoModal } from "../cmps/yesOrNoModal";
 
 export function DetailsPage() {
   const { productId } = useParams();
   const navigate = useNavigate();
+
   const [product, setProduct] = useState<IProductModel | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [initialProduct, setInitialProduct] = useState<IProductModel | null>(
+    null
+  );
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchProduct() {
-      try {
-        if (!productId) {
-          throw new Error("Missing productId from route params");
-        }
-        const res = await axios.getById(productId);
+    if (!productId) {
+      setErrorMsg("Missing productId from route params");
+      setIsLoading(false);
+      return;
+    }
 
-        setProduct(res);
-      } catch (error: any) {
-        setError(error.message);
+    const fetchProduct = async () => {
+      try {
+        const productData = await axios.getById(productId);
+        setProduct(productData);
+        setInitialProduct(productData);
+      } catch (err: any) {
+        setErrorMsg(err.message || "Failed to fetch product");
       } finally {
         setIsLoading(false);
       }
-    }
+    };
 
     fetchProduct();
   }, [productId]);
@@ -41,31 +50,42 @@ export function DetailsPage() {
     setProduct({ ...product, [name]: value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const result = productSchema.safeParse(product);
-
-      if (!result.success) {
-        const errors: Record<string, string> = {};
-        result.error.issues.forEach((err) => {
-          if (err.path[0]) {
-            errors[err.path[0] as string] = err.message;
-          }
-        });
-        setFormErrors(errors);
-        return;
-      }
-      if (!product) throw new Error("No product has found");
-      await axios.save(product);
+  const handleBackClick = () => {
+    if (JSON.stringify(product) === JSON.stringify(initialProduct)) {
       navigate("/");
-    } catch (error: any) {
-      console.error("Update failed", error);
+    } else {
+      setShowLeaveModal(true);
     }
   };
 
-  if (isLoading) return <Spinner/>;
-  if (error) return <p>{error}</p>;
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    console.log('handleFormSubmit');
+    
+    e.preventDefault();
+    if (!product) return;
+
+    const result = productSchema.safeParse(product);
+    if (!result.success) {
+      const errors: Record<string, string> = {};
+      for (const issue of result.error.issues) {
+        if (issue.path[0]) {
+          errors[issue.path[0] as string] = issue.message;
+        }
+      }
+      setFormErrors(errors);
+      return;
+    }
+
+    try {
+      await axios.save(product);
+      navigate("/");
+    } catch (err: any) {
+      console.error("Update failed:", err);
+    }
+  };
+
+  if (isLoading) return <Spinner />;
+  if (errorMsg) return <p>{errorMsg}</p>;
   if (!product) return null;
 
   return (
@@ -73,11 +93,12 @@ export function DetailsPage() {
       <div className="flex row align-center">
         <ArrowBigLeft
           className="arrow-back cursor"
-          onClick={() => navigate("/")}
+          onClick={() => handleBackClick()}
         />
         <h1 className="fs24">Edit Product</h1>
       </div>
-      <form onSubmit={handleSubmit} className="product-form flex column">
+
+      <form onSubmit={handleFormSubmit} className="product-form flex column">
         <label className="flex column">
           Name:
           <input
@@ -87,6 +108,7 @@ export function DetailsPage() {
             required
           />
         </label>
+
         <label className="flex column">
           SKU:
           <input
@@ -97,6 +119,7 @@ export function DetailsPage() {
             required
           />
         </label>
+
         <label className="flex column">
           Category:
           <select
@@ -110,6 +133,7 @@ export function DetailsPage() {
             <option value="Field Crop">Field Crop</option>
           </select>
         </label>
+
         <label className="flex column">
           Description:
           <input
@@ -118,6 +142,7 @@ export function DetailsPage() {
             onChange={handleChange}
           />
         </label>
+
         <label className="flex column">
           Marketing Date:
           <input
@@ -125,21 +150,30 @@ export function DetailsPage() {
             type="date"
             value={product.marketingDate?.slice(0, 10)}
             onChange={handleChange}
-            required
             max={getExactlyOneWeekAgo()}
+            required
           />
         </label>
+
         <button type="submit" className="btn-save">
           Save
         </button>
+
         <div className="flex column">
-          {formErrors &&
-            Object.entries(formErrors).map(([field, message]) => (
-              <span key={field} className="form-error">
-                {message}
-              </span>
-            ))}
+          {Object.entries(formErrors).map(([field, message]) => (
+            <span key={field} className="form-error">
+              {message}
+            </span>
+          ))}
         </div>
+
+        {showLeaveModal && (
+          <YesOrNoModal
+            text="Are you sure you want to leave? Unsaved changes will be lost."
+            handleYes={() => navigate("/")}
+            handleNo={() => setShowLeaveModal(false)}
+          />
+        )}
       </form>
     </main>
   );

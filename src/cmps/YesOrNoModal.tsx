@@ -20,11 +20,19 @@ export function YesOrNoModal({
         <h3>{text}</h3>
         <div className="yes-no-buttons-container flex">
           {handleNo && (
-            <button className="cancel-btn cursor" onClick={handleNo}>
+            <button
+              type="button"
+              className="cancel-btn cursor"
+              onClick={handleNo}
+            >
               Cancel
             </button>
           )}
-          <button className="leave-page-btn cursor" onClick={handleYes}>
+          <button
+            type="button"
+            className="leave-page-btn cursor"
+            onClick={handleYes}
+          >
             {yesButtonText ? yesButtonText : "Yes"}
           </button>
         </div>

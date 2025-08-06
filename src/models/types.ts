@@ -32,7 +32,6 @@ import { z } from "zod";
 export const productSchema = z.object({
   name: z.string().min(1, "Product name is required").max(50),
   sku: z
-    .string()
     .transform((val) => Number(val))
     .refine((val) => !isNaN(val), { message: "SKU must be a number" })
     .refine((val) => val >= 0, { message: "SKU must be 0 or more" })
