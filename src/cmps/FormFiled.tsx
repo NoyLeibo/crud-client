@@ -1,5 +1,5 @@
 interface FormFieldProps {
-  label: string;
+  label?: string;
   name: string;
   value: string | number | undefined;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;

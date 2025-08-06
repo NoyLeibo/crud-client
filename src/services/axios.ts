@@ -3,13 +3,23 @@ import { httpService } from "./http.service";
 
 const BASE_URL = "product/";
 
-// GET: Fetch all products (optionally filtered by category)
-async function getProducts(
-  filter: ProductCategory | null
-): Promise<IProductModel[]> {
-  const res = filter
-    ? await httpService.get(BASE_URL, { category: filter })
-    : await httpService.get(BASE_URL);
+interface ProductFilter {
+  filterByCategory: ProductCategory | null;
+  filterByName: string;
+}
+// GET: Fetch all products (optionally filtered by category and name)
+async function getProducts(filter: ProductFilter): Promise<IProductModel[]> {
+  const query: Record<string, string> = {};
+
+  if (filter.filterByCategory) {
+    query.category = filter.filterByCategory;
+  }
+
+  if (filter.filterByName) {
+    query.name = filter.filterByName;
+  }
+
+  const res = await httpService.get(BASE_URL, query);
   return res;
 }
 

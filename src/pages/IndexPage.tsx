@@ -8,22 +8,19 @@ import { ProductFilter } from "../cmps/ProductFilter";
 import { Spinner } from "../cmps/Spinner";
 
 import { axios } from "../services/axios";
-import { getExactlyOneWeekAgo } from "../services/utills";
+import { EMPTY_PRODUCT, getExactlyOneWeekAgo } from "../services/utills";
 import type { IProductModel, ProductCategory } from "../models/types";
 
 export function IndexPage() {
   const navigate = useNavigate();
 
   const [products, setProducts] = useState<IProductModel[]>([]);
-  const [formData, setFormData] = useState<Partial<IProductModel>>({
-    name: "",
-    sku: 0,
-    category: "",
-    description: "",
-    marketingDate: getExactlyOneWeekAgo(),
-  });
+  const [formData, setFormData] =
+    useState<Partial<IProductModel>>(EMPTY_PRODUCT);
 
-  const [filterBy, setFilterBy] = useState<ProductCategory | null>(null);
+  const [filterByCategory, setFilterByCategory] =
+    useState<ProductCategory | null>(null);
+  const [filterByName, setFilterByName] = useState<string>("");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
   const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] =
@@ -34,7 +31,10 @@ export function IndexPage() {
     const fetchProducts = async () => {
       try {
         setIsLoading(true);
-        const data = await axios.getProducts(filterBy);
+        const data = await axios.getProducts({
+          filterByCategory,
+          filterByName,
+        });
         setProducts(data);
         setSelectedIds([]);
       } catch (err: any) {
@@ -45,7 +45,7 @@ export function IndexPage() {
     };
 
     fetchProducts();
-  }, [filterBy]);
+  }, [filterByCategory, filterByName]);
 
   const toggleAddProductModal = () => {
     setIsAddProductModalOpen((prev) => !prev);
@@ -96,7 +96,12 @@ export function IndexPage() {
         setYesOrNoModal={setIsDeleteConfirmModalOpen}
       />
 
-      <ProductFilter filterBy={filterBy} setFilterBy={setFilterBy} />
+      <ProductFilter
+        filterByCategory={filterByCategory}
+        setFilterByCategory={setFilterByCategory}
+        filterByName={filterByName}
+        setFilterByName={setFilterByName}
+      />
 
       {isLoading ? (
         <Spinner />
@@ -110,7 +115,8 @@ export function IndexPage() {
         />
       ) : (
         <h2 className="flex align-center justify-center">
-          No products{filterBy && ` with category "${filterBy}"`}{" "}
+          No products
+          {filterByCategory && ` with category "${filterByCategory}"`}{" "}
           <span className="cursor underline" onClick={handleEmptyClick}>
             add one now!
           </span>
