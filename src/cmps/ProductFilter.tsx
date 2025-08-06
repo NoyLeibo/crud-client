@@ -22,7 +22,7 @@ export function ProductFilter({
   return (
     <div className="filter-by-section flex justify-center align-center">
       <div className="flex column">
-        <h3>Filter by category:&nbsp;</h3>
+        <h3>Filter by category:</h3>
         <select
           name="category"
           value={filterByCategory || ""}
@@ -39,7 +39,7 @@ export function ProductFilter({
       </div>
 
       <div className="flex column">
-        <h3>Filter by name:&nbsp;</h3>
+        <h3>Filter by name:</h3>
         <FormField
           name="filter by name"
           value={filterByName}

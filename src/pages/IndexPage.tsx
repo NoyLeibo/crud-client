@@ -126,9 +126,11 @@ export function IndexPage() {
           setSelectedIds={setSelectedIds}
         />
       ) : (
-        <h2 className="flex align-center justify-center">
-          No products
-          {filterByCategory && ` with category "${filterByCategory}"`}{" "}
+        <h2 className="flex align-center justify-center column">
+          No products&nbsp;
+          {filterByCategory && `with category "${filterByCategory}"`}
+          {filterByCategory && filterByName && ' and '}
+          {filterByName && `with name "${filterByName}"`}
           <span className="cursor underline" onClick={handleEmptyClick}>
             add one now!
           </span>
