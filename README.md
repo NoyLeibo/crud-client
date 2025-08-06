@@ -1,69 +1,99 @@
-# React + TypeScript + Vite
+# Crud-App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern Product Management (CRUD) system built with React, TypeScript, and Vite.
+This project was developed as a home assignment and demonstrates a clean SPA architecture, user-friendly UI, and clear separation of concerns.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Overview
 
-## Expanding the ESLint configuration
+This app lets you manage a list of products (Fruits, Vegetables, and Field Crops): add, edit, delete, filter, and search products easily. The UI is responsive and pleasant, with strong typing and organized client-side logic.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Main Features
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- **Product list display** with search and category filtering
+- **Add new product** (with zod validation)
+- **Edit existing product**
+- **Delete one or multiple products** (with Undo option by event-bus)
+- **Confirmation modals** for sensitive actions
+- **Global alert system** for feedback messages
+- **Loading spinner** for async actions
+- **Responsive, clean design (Sass)**
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Product Model
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Each product includes the following fields:
+- `name` – Product name (required)
+- `sku` – Unique identifier (number between 0 and 1000)
+- `description` – Description (optional)
+- `category` – Category: Fruit / Vegetable / Field Crop
+- `marketingDate` – Marketing date (must be at least 7 days ago)
+- `isDeleted` – Soft delete flag (internal use)
+- `createdAt`, `updatedAt` – Creation/update timestamps
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+## Getting Started
+
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Run in development mode**
+   ```bash
+   npm run dev
+   ```
+   The app will be available at: [http://localhost:5173](http://localhost:5173)
+
+3. **Build for production**
+   ```bash
+   npm run build
+   ```
+
+4. **Lint the code**
+   ```bash
+   npm run lint
+   ```
+
+> **Note:**
+> The app expects a backend server running at `http://localhost:3000/` with a compatible REST API.
+> (You can change this URL in `src/services/http.service.ts` if needed.)
+
+---
+
+## Tech Stack
+
+- React 19
+- TypeScript
+- Vite
+- Axios
+- React Router v7
+- Zod (validation)
+- Sass
+
+---
+
+## Folder Structure
+
+- `src/cmps/` – UI components
+- `src/pages/` – App pages
+- `src/services/` – API services, event bus, etc.
+- `src/models/` – Types and models
+- `src/context/` – Global contexts (Alerts)
+- `src/assets/` – Styles (Sass)
+
+---
+
+## Notes
+
+- The code is modular, documented, and easy to extend.
+- No sensitive information is included.
+- All file and component names are in English and consistent.
+- Feedback is welcome!
+
+Good luck and happy reviewing! 🚀
