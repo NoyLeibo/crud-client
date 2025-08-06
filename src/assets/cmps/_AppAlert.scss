@@ -1,0 +1,35 @@
+.app-alert {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    padding: 1em 1.5em;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 500;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+  
+    &.success {
+      background-color: #2ecc71;
+    }
+  
+    &.error {
+      background-color: #e74c3c;
+    }
+  
+    .undo-btn {
+      background: none;
+      border: 1px solid white;
+      color: white;
+      padding: 0.4em 0.8em;
+      border-radius: 5px;
+      cursor: pointer;
+  
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+  

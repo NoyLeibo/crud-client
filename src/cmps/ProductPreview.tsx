@@ -18,7 +18,7 @@ export function ProductPreview({
   toggleSelect,
   isSelected,
 }: ProductPreviewProps) {
-  function getCategoryColor(category: string): string {
+  const getCategoryColor = (category: string): string => {
     switch (category) {
       case "Fruit":
         return "green";
@@ -29,7 +29,7 @@ export function ProductPreview({
       default:
         return "black";
     }
-  }
+  };
 
   return (
     <tr>
@@ -41,7 +41,12 @@ export function ProductPreview({
         />
       </td>
       <td data-label="Name">
-       {product.name.length > 15 ? <TruncatedText text={product.name} /> : product.name }</td>
+        {product.name.length > 15 ? (
+          <TruncatedText text={product.name} />
+        ) : (
+          product.name
+        )}
+      </td>
       <td data-label="SKU">{product.sku}</td>
       <td data-label="Category">
         <span style={{ color: getCategoryColor(product.category) }}>
@@ -49,7 +54,13 @@ export function ProductPreview({
         </span>
       </td>
       <td data-label="Description">
-        {!product.description ? "-" : product.description.length > 20 ? <TruncatedText text={product.description}  /> : product.description }
+        {!product.description ? (
+          "-"
+        ) : product.description.length > 20 ? (
+          <TruncatedText text={product.description} />
+        ) : (
+          product.description
+        )}
       </td>
       <td data-label="Marketing Date">
         {format(new Date(product.marketingDate), "dd/MM/yyyy")}
