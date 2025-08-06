@@ -10,6 +10,7 @@ import { YesOrNoModal } from "./YesOrNoModal";
 import isEqual from "lodash/isEqual";
 import { FormField } from "./FormField";
 import { ArrowBigLeft } from "lucide-react";
+import { useAlert } from "../context/AlertContext";
 
 interface AddProductModalProps {
   setProducts: SetState<IProductModel[]>;
@@ -31,6 +32,7 @@ export function AddProductModal({
   clearFilters,
 }: AddProductModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
+  const { showAlert } = useAlert();
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [showLeaveModal, setShowLeaveModal] = useState(false);
@@ -93,7 +95,12 @@ export function AddProductModal({
       setProducts([...products, newProduct]);
       setAddProudctModal(false);
       setFormData(EMPTY_PRODUCT);
-      clearFilters()
+      clearFilters();
+      showAlert({
+        text: "Product has been added",
+        type: "success",
+        duration: 3000,
+      });
     } catch (error: any) {
       console.log(error.message);
     }
