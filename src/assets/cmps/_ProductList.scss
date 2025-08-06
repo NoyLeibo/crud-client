@@ -31,17 +31,12 @@
   }
 }
 
-@media (max-width: 787px) {
+@media (max-width: 1024px) {
   .product-table {
     thead {
       display: none;
     }
 
-    tbody {
-      // display: flex;
-      // flex-direction: column;
-      // gap: 1rem;
-    }
     tr {
       display: flex;
       flex-direction: column;
@@ -50,7 +45,6 @@
       border: 1px solid #ddd;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      
     }
   }
 }

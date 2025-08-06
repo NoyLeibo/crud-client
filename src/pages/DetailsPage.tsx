@@ -4,6 +4,7 @@ import { productSchema, type IProductModel } from "../models/types";
 import { axios } from "../services/axios";
 import { ArrowBigLeft } from "lucide-react";
 import { getExactlyOneWeekAgo } from "../services/utills";
+import { Spinner } from "../cmps/Spinner";
 
 export function DetailsPage() {
   const { productId } = useParams();
@@ -63,7 +64,7 @@ export function DetailsPage() {
     }
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Spinner/>;
   if (error) return <p>{error}</p>;
   if (!product) return null;
 
