@@ -6,7 +6,7 @@ import { ArrowBigLeft } from "lucide-react";
 import { getExactlyOneWeekAgo } from "../services/utills";
 import { Spinner } from "../cmps/Spinner";
 import { YesOrNoModal } from "../cmps/YesOrNoModal";
-import { FormField } from "../cmps/FormFiled";
+import { FormField } from "../cmps/FormField";
 
 export function DetailsPage() {
   const { productId } = useParams();

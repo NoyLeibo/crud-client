@@ -8,7 +8,7 @@ import { EMPTY_PRODUCT, getExactlyOneWeekAgo } from "../services/utills";
 import { axios } from "../services/axios";
 import { YesOrNoModal } from "./YesOrNoModal";
 import isEqual from "lodash/isEqual";
-import { FormField } from "./FormFiled";
+import { FormField } from "./FormField";
 import { ArrowBigLeft } from "lucide-react";
 
 interface AddProductModalProps {

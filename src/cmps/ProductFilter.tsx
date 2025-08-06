@@ -1,5 +1,5 @@
 import type { ProductCategory, SetState } from "../models/types";
-import { FormField } from "./FormFiled";
+import { FormField } from "./FormField";
 
 interface FilterByProps {
   filterByCategory: ProductCategory | null;
