@@ -4,7 +4,7 @@ import {
   type IProductModel,
   type SetState,
 } from "../models/types";
-import { EMPTY_PRODUCT, getExactlyOneWeekAgo } from "../services/utills";
+import { EMPTY_PRODUCT, getExactlyOneWeekAgo } from "../services/utils";
 import { axios } from "../services/axios";
 import { YesOrNoModal } from "./YesOrNoModal";
 import isEqual from "lodash/isEqual";

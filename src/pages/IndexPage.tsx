@@ -8,7 +8,7 @@ import { ProductFilter } from "../cmps/ProductFilter";
 import { Spinner } from "../cmps/Spinner";
 
 import { axios } from "../services/axios";
-import { EMPTY_PRODUCT } from "../services/utills";
+import { EMPTY_PRODUCT } from "../services/utils";
 import type { IProductModel, ProductCategory } from "../models/types";
 import { useAlert } from "../context/AlertContext";
 

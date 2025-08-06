@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { productSchema, type IProductModel } from "../models/types";
 import { axios } from "../services/axios";
 import { ArrowBigLeft } from "lucide-react";
-import { getExactlyOneWeekAgo } from "../services/utills";
+import { getExactlyOneWeekAgo } from "../services/utils";
 import { Spinner } from "../cmps/Spinner";
 import { YesOrNoModal } from "../cmps/YesOrNoModal";
 import { FormField } from "../cmps/FormField";
