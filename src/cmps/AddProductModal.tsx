@@ -13,46 +13,48 @@ import { ArrowBigLeft } from "lucide-react";
 import { useAlert } from "../context/AlertContext";
 
 interface AddProductModalProps {
-  setProducts: SetState<IProductModel[]>;
-  products: IProductModel[];
-  addProudctModal: boolean;
-  setAddProudctModal: SetState<boolean>;
+  setProductList: SetState<IProductModel[]>;
+  productList: IProductModel[];
+  isAddProductModalOpen: boolean;
+  setIsAddProductModalOpen: SetState<boolean>;
   formData: Partial<IProductModel>;
   setFormData: SetState<Partial<IProductModel>>;
   clearFilters: () => void;
 }
 
 export function AddProductModal({
-  addProudctModal,
+  isAddProductModalOpen,
   formData,
   setFormData,
-  products,
-  setProducts,
-  setAddProudctModal,
+  productList,
+  setProductList,
+  setIsAddProductModalOpen,
   clearFilters,
 }: AddProductModalProps) {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const addProductModalRef = useRef<HTMLDivElement>(null);
   const { showAlert } = useAlert();
 
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string>
+  >({});
+  const [showUnsavedChangesModal, setShowUnsavedChangesModal] = useState(false);
 
   useEffect(() => {
-    if (!addProudctModal) return;
+    if (!isAddProductModalOpen) return;
 
     setFormData(EMPTY_PRODUCT);
-    setFormErrors({});
-  }, [addProudctModal]);
+    setValidationErrors({});
+  }, [isAddProductModalOpen]);
 
   //Close modal on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        addProudctModal &&
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
+        isAddProductModalOpen &&
+        addProductModalRef.current &&
+        !addProductModalRef.current.contains(event.target as Node)
       ) {
-        handleBackClick();
+        handleCloseModal();
       }
     };
 
@@ -60,13 +62,13 @@ export function AddProductModal({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [addProudctModal, formData]);
+  }, [isAddProductModalOpen, formData]);
 
-  const handleBackClick = () => {
+  const handleCloseModal = () => {
     if (isEqual(formData, EMPTY_PRODUCT)) {
-      setAddProudctModal(false);
+      setIsAddProductModalOpen(false);
     } else {
-      setShowLeaveModal(true);
+      setShowUnsavedChangesModal(true);
     }
   };
 
@@ -86,14 +88,14 @@ export function AddProductModal({
       validation.error.issues.forEach(({ path, message }) => {
         if (path[0]) validationErrors[path[0] as string] = message;
       });
-      setFormErrors(validationErrors);
+      setValidationErrors(validationErrors);
       return;
     }
 
     try {
       const newProduct = await axios.save(formData);
-      setProducts([...products, newProduct]);
-      setAddProudctModal(false);
+      setProductList([...productList, newProduct]);
+      setIsAddProductModalOpen(false);
       setFormData(EMPTY_PRODUCT);
       clearFilters();
       showAlert({
@@ -109,12 +111,12 @@ export function AddProductModal({
   return (
     <div className="add-product-modal">
       <main className="flex align-center justify-center full">
-        <div ref={modalRef} className="modal flex column">
+        <div ref={addProductModalRef} className="modal flex column">
           <form onSubmit={handleSubmit} className="flex column">
             <div className="flex row align-center">
               <ArrowBigLeft
                 className="arrow-back cursor"
-                onClick={() => handleBackClick()}
+                onClick={() => handleCloseModal()}
               />
               <h1>Add New Product</h1>
             </div>
@@ -177,7 +179,7 @@ export function AddProductModal({
           </form>
 
           <div className="flex column">
-            {Object.entries(formErrors).map(([field, message]) => (
+            {Object.entries(validationErrors).map(([field, message]) => (
               <span key={field} className="form-error">
                 {message}
               </span>
@@ -186,11 +188,11 @@ export function AddProductModal({
         </div>
       </main>
 
-      {showLeaveModal && (
+      {showUnsavedChangesModal && (
         <YesOrNoModal
           text="Are you sure you want to leave? Unsaved changes will be lost."
-          handleYes={() => setAddProudctModal(false)}
-          handleNo={() => setShowLeaveModal(false)}
+          handleYes={() => setIsAddProductModalOpen(false)}
+          handleNo={() => setShowUnsavedChangesModal(false)}
         />
       )}
 

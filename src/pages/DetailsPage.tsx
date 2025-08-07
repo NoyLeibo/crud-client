@@ -14,8 +14,8 @@ export function DetailsPage() {
 
   const [product, setProduct] = useState<IProductModel | null>(null);
   const [initialProduct, setInitialProduct] = useState<IProductModel | null>(null);
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const [showLeaveModal, setShowLeaveModal] = useState<boolean>(false);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [showUnsavedChangesModal, setShowUnsavedChangesModal] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -53,7 +53,7 @@ export function DetailsPage() {
     if (JSON.stringify(product) === JSON.stringify(initialProduct)) {
       navigate("/");
     } else {
-      setShowLeaveModal(true);
+      setShowUnsavedChangesModal(true);
     }
   };
 
@@ -69,7 +69,7 @@ export function DetailsPage() {
           errors[issue.path[0] as string] = issue.message;
         }
       }
-      setFormErrors(errors);
+      setValidationErrors(errors);
       return;
     }
 
@@ -149,18 +149,18 @@ export function DetailsPage() {
         </button>
 
         <div className="flex column">
-          {Object.entries(formErrors).map(([field, message]) => (
+          {Object.entries(validationErrors).map(([field, message]) => (
             <span key={field} className="form-error">
               {message}
             </span>
           ))}
         </div>
 
-        {showLeaveModal && (
+        {showUnsavedChangesModal && (
           <YesOrNoModal
             text="Are you sure you want to leave? Unsaved changes will be lost."
             handleYes={() => navigate("/")}
-            handleNo={() => setShowLeaveModal(false)}
+            handleNo={() => setShowUnsavedChangesModal(false)}
           />
         )}
       </form>

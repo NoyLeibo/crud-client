@@ -2,7 +2,7 @@ import type { IProductModel, SetState } from "../models/types";
 import { ProductPreview } from "./ProductPreview";
 
 interface ProductListProps {
-  products: IProductModel[];
+  productList: IProductModel[];
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
   setSelectedIds: SetState<string[]>;
@@ -10,7 +10,7 @@ interface ProductListProps {
 }
 
 export function ProductList({
-  products,
+  productList,
   onEdit,
   onDelete,
   setSelectedIds,
@@ -23,10 +23,10 @@ export function ProductList({
   };
 
   const toggleSelectAll = () => {
-    if (selectedIds.length === products.length) {
+    if (selectedIds.length === productList.length) {
       setSelectedIds([]);
     } else {
-      setSelectedIds(products.map((p) => p._id!));
+      setSelectedIds(productList.map((p) => p._id!));
     }
   };
 
@@ -43,7 +43,7 @@ export function ProductList({
                 id="selectAll"
                 onChange={toggleSelectAll}
                 checked={
-                  selectedIds.length === products.length &&
+                  selectedIds.length === productList.length &&
                   selectedIds.length > 0
                 }
               />
@@ -57,7 +57,7 @@ export function ProductList({
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
+          {productList.map((product) => (
             <ProductPreview
               key={product._id}
               product={product}

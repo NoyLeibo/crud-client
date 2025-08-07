@@ -15,8 +15,8 @@ import { useAlert } from "../context/AlertContext";
 export function IndexPage() {
   const navigate = useNavigate();
 
-  const [products, setProducts] = useState<IProductModel[]>([]);
-  const [formData, setFormData] =
+  const [productList, setProductList] = useState<IProductModel[]>([]);
+  const [newProductData, setNewProductData] =
     useState<Partial<IProductModel>>(EMPTY_PRODUCT);
 
   const [filterByCategory, setFilterByCategory] =
@@ -36,7 +36,7 @@ export function IndexPage() {
         filterByCategory,
         filterByName,
       });
-      setProducts(data);
+      setProductList(data);
       setSelectedIds([]);
     } catch (err: any) {
       console.error("Failed to fetch products:", err.message);
@@ -65,19 +65,19 @@ export function IndexPage() {
   };
 
   useEffect(() => {
-    setFormData(EMPTY_PRODUCT);
+    setNewProductData(EMPTY_PRODUCT);
   }, [isAddProductModalOpen]);
 
   const handleDeleteProducts = async (productId?: string) => {
     try {
       if (productId) {
         await axios.remove(productId);
-        setProducts((prev) =>
+        setProductList((prev) =>
           prev.filter((product) => product._id !== productId)
         );
       } else {
         await axios.remove(selectedIds);
-        setProducts((prev) =>
+        setProductList((prev) =>
           prev.filter((product) => !selectedIds.includes(product._id))
         );
       }
@@ -123,9 +123,9 @@ export function IndexPage() {
 
       {isLoading ? (
         <Spinner />
-      ) : products.length ? (
+      ) : productList.length ? (
         <ProductList
-          products={products}
+          productList={productList}
           onEdit={(id) => navigate(`/product/${id}`)}
           onDelete={handleDeleteProducts}
           selectedIds={selectedIds}
@@ -135,7 +135,7 @@ export function IndexPage() {
         <h2 className="flex align-center justify-center column">
           No products&nbsp;
           {filterByCategory && `with category "${filterByCategory}"`}
-          {filterByCategory && filterByName && ' and '}
+          {filterByCategory && filterByName && " and "}
           {filterByName && `with name "${filterByName}"`}
           <span className="cursor underline" onClick={handleEmptyClick}>
             add one now!
@@ -145,12 +145,12 @@ export function IndexPage() {
 
       {isAddProductModalOpen && (
         <AddProductModal
-          formData={formData}
-          setFormData={setFormData}
-          addProudctModal={isAddProductModalOpen}
-          setAddProudctModal={setIsAddProductModalOpen}
-          products={products}
-          setProducts={setProducts}
+          formData={newProductData}
+          setFormData={setNewProductData}
+          isAddProductModalOpen={isAddProductModalOpen}
+          setIsAddProductModalOpen={setIsAddProductModalOpen}
+          productList={productList}
+          setProductList={setProductList}
           clearFilters={clearFilters}
         />
       )}
