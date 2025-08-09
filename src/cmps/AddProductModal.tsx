@@ -94,6 +94,7 @@ export function AddProductModal({
 
     try {
       const newProduct = await axios.save(formData);
+
       setProductList([...productList, newProduct]);
       setIsAddProductModalOpen(false);
       setFormData(EMPTY_PRODUCT);
@@ -104,7 +105,13 @@ export function AddProductModal({
         duration: 3000,
       });
     } catch (error: any) {
-      console.log(error.message);
+      console.log(error);
+
+      showAlert({
+        text: `Validator failed for path "name" with value ${formData.name}`,
+        type: "error",
+        duration: 3000,
+      });
     }
   };
 

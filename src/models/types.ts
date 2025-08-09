@@ -20,7 +20,7 @@ export type ProductName =
 
 export interface IProductModel {
   _id: string;
-  name: string;
+  name: ProductName;
   sku: number;
   description?: string;
   category: string;
