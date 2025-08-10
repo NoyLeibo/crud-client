@@ -41,7 +41,7 @@ Each product includes the following fields:
 
 1. **Clone the repo:**
    ```bash
-   git clone (https://github.com/NoyLeibo/crud-client.git)
+   git clone https://github.com/NoyLeibo/crud-client.git
    cd crud-client
    ```
 2. **Install dependencies**
