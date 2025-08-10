@@ -105,7 +105,6 @@ export function AddProductModal({
         duration: 3000,
       });
     } catch (error: any) {
-
       showAlert({
         text: `Validator failed for path "name" with value ${formData.name}`,
         type: "error",
@@ -143,6 +142,8 @@ export function AddProductModal({
               value={formData.sku}
               onChange={handleInputChange}
               placeholder="SKU (e.g. 101)"
+              max="1000"
+              min="0"
               required
             />
 

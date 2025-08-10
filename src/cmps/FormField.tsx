@@ -7,6 +7,7 @@ interface FormFieldProps {
   type?: string;
   required?: boolean;
   max?: string;
+  min?: string;
 }
 
 export function FormField({
@@ -18,6 +19,7 @@ export function FormField({
   type = "text",
   required = false,
   max,
+  min,
 }: FormFieldProps) {
   return (
     <div className="flex column">
@@ -30,6 +32,7 @@ export function FormField({
         type={type}
         required={required}
         max={max}
+        min={min}
       />
     </div>
   );

@@ -13,9 +13,14 @@ export function DetailsPage() {
   const navigate = useNavigate();
 
   const [product, setProduct] = useState<IProductModel | null>(null);
-  const [initialProduct, setInitialProduct] = useState<IProductModel | null>(null);
-  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
-  const [showUnsavedChangesModal, setShowUnsavedChangesModal] = useState<boolean>(false);
+  const [initialProduct, setInitialProduct] = useState<IProductModel | null>(
+    null
+  );
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string>
+  >({});
+  const [showUnsavedChangesModal, setShowUnsavedChangesModal] =
+    useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -88,10 +93,7 @@ export function DetailsPage() {
   return (
     <main className="product-details-page flex column align-center">
       <div className="flex row align-center">
-        <ArrowBigLeft
-          className="arrow-back cursor"
-          onClick={handleBackClick}
-        />
+        <ArrowBigLeft className="arrow-back cursor" onClick={handleBackClick} />
         <h1 className="fs24">Edit Product</h1>
       </div>
 
@@ -110,6 +112,8 @@ export function DetailsPage() {
           type="number"
           value={product.sku}
           onChange={handleChange}
+          max="1000"
+          min="0"
           required
         />
 
