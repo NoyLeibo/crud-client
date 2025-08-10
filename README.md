@@ -39,27 +39,27 @@ Each product includes the following fields:
 
 ## Getting Started
 
-1. **Install dependencies**
+1. **Clone the repo:**
+   ```bash
+   git clone [your-repo-url](https://github.com/NoyLeibo/crud-client.git)
+   cd crud-client
+   ```
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. **Run in development mode**
+3. **Run in development mode**
    ```bash
    npm run dev
    ```
    The app will be available at: [http://localhost:5173](http://localhost:5173)
 
-3. **Build for production**
+4. **Build for production**
    ```bash
    npm run build
    ```
-
-4. **Lint the code**
-   ```bash
-   npm run lint
-   ```
-
+   
 > **Note:**
 > The app expects a backend server running at `http://localhost:3000/` with a compatible REST API.
 > (You can change this URL in `src/services/http.service.ts` if needed.)
